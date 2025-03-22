@@ -1,5 +1,7 @@
-
+<div align="center">
+  
 # Poe API Rust
+</div>
 
 **Poe API Rust** is a simple, lightweight, and efficient API wrapper for Poe.com. This Rust-based project provides a clean interface to interact with the Poe API, making it easy to manage chat conversations, bot interactions, and user profiles.
 
