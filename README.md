@@ -19,8 +19,15 @@
     - [Delete Messages](#delete-messages)
     - [Get Message Share URL](#get-message-share-url)
     - [Get Total Cost Points](#get-total-cost-points)
-    - [Get List Preview App](#get-list-preview-app)
-  - **Chat Setup & Customization**
+    - [Get List Preview Apps](#get-list-preview-apps)
+  - **User & Bot Management**
+    - [Explore](#explore)
+    - [Get Available Categories](#available-categories)
+    - [Get Bot Info](#get-bot-info)
+    - [Get User Info](#get-user-info)
+    - [Follow User](#follow-user)
+    - [Unfollow User](#unfollow-user)
+ - **Chat Setup & Customization**
     - [Set Default Message Point Limit](#set-default-message-point-limit)
     - [Set Default Bot](#set-default-bot)
     - [Set Chat Context Optimization](#set-chat-context-optimization)
@@ -31,15 +38,8 @@
     - [Import Chat](#import-chat)
     - [Chat History](#chat-history)
     - [Clear Chat Context](#clear-chat-context)
-  - **User & Bot Management**
-    - [Explore](#explore)
-    - [Bot Info](#bot-info)
-    - [User Info](#user-info)
-    - [Follow User](#follow-user)
-    - [Unfollow User](#unfollow-user)
   - **Misc**
     - [Get Settings](#settings)
-    - [Get Available Categories](#available-categories)
 - [**Installation**](#installation)
 - [**License**](#license)
 
@@ -49,14 +49,13 @@
 
 **Poe API Rust** is an advanced API crafted for managing chat and messaging functionalities on Poe.com. Leveraging Rust's capabilities, this project emphasizes safety, speed, and efficient concurrency. The API enables users to:
 
-- Discover available chat rooms and topics.
+- Discover available users, bots and AI models.
 - Customize settings for chat conversations.
 - Send, retry, and cancel messages seamlessly.
 - Access detailed information about bots and users.
 - Fine-tune and optimize chat contexts for enhanced interactions.
 
 This documentation offers a comprehensive guide to each function available within the API.
-
 
 ### How to Get Your Token
 
@@ -112,7 +111,6 @@ pub struct SendMessageData<'a> {
     pub files: Vec<FileInput<'a>>,
 }
 
-#[derive(Debug)]
 pub enum FileInput<'a> {
     Url(&'a str),
     Local(PathBuf),
@@ -296,4 +294,104 @@ api.get_total_cost_points(message_code).await?;
 message.total_cost_points().await?;
 ```
 </details>
+
+---
+
+### Get List Preview App
+Generates a shareable URL for a preview apps, allowing it to be shared externally.
+
+The "Previews" feature on poe.com allows users to generate and interact with web applications directly, making it possible to create things like games, animations, and data visualizations using AI coding models.
+
+<details>
+<summary><b>Parameters:</b></summary>
+
+| Field Name  | Data Type | Description |
+| --- | --- | --- |
+| `message_id`   | `i64`     | Message identifier. |
+</details>
+
+<details>
+<summary><b>Example:</b></summary>
+
+```rust
+let message_id: i64 = 12345;
+api.get_list_preview_app(message_code).await?;
+
+// or
+message.list_preview_app().await?;
+```
+</details>
+
+---
+
+### Explore
+Discover available users, bots and AI models.
+
+<details>
+<summary><b>Parameters:</b></summary>
+
+```rust
+pub enum EntityType {
+    User,
+    Bot,
+}
+
+pub struct SearchData<'a> {
+    pub query: Option<&'a str>,
+    pub category_name: &'a str,
+    pub entity_type: EntityType,
+    pub count: usize,
+}
+```
+</details>
+
+<details>
+<summary><b>Example:</b></summary>
+
+```rust
+use poe_api::search::Entity;
+use futures_util::StreamExt;
+
+let search_data = SearchData {
+    query: Some("deepseek"),
+    entity_type: EntityType::Bot,
+    ..Default::default()
+};
+let mut result = api.explore(search_data).await?;
+
+while let Some(entity) = result.next().await {
+    match entity {
+        Entity::User(_user) => {
+            // process user
+        }
+        Entity::Bot(_bot) => {
+            // process bot
+        }
+    }
+}
+```
+</details>
+
+---
+
+### Set Default Message Point Limit 
+Sets the default limit on message points per conversation. This function helps enforce usage policies or manage message size constraints.
+
+<details>
+<summary><b>Parameters:</b></summary>
+
+| Field Name  | Data Type | Description |
+| --- | --- | --- |
+| `limit`   | `usize`     | Maximum threshold points per conversation |
+</details>
+
+<details>
+<summary><b>Example:</b></summary>
+
+```rust
+let limit: usize = 420;
+api.set_default_message_point_limit(limit).await?;
+```
+
+---
 
