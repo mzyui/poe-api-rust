@@ -1,10 +1,9 @@
 <div align="center">
-  
-# Poe API Rust
+<h1>Poe API Rust <img src="https://psc2.cf2.poecdn.net/favicon.svg" height="35"></h1>
+
+<p><em>A simple, lightweight and efficient API wrapper for Poe.com</em></p>
 </div>
-
-**Poe API Rust** is a simple, lightweight, and efficient API wrapper for Poe.com. This Rust-based project provides a clean interface to interact with the Poe API, making it easy to manage chat conversations, bot interactions, and user profiles.
-
+  
 ## Table of Contents
 
 - [Overview](#overview)
@@ -18,7 +17,7 @@
     - [Retry Message](#retry-message)
     - [Cancel Message](#cancel-message)
     - [Delete Messages](#delete-messages)
-    - [Message Share URL](#message-share-url)
+    - [Get Message Share URL](#message-share-url)
     - [Get Total Cost Points](#total-cost-points)
     - [Get List Preview App](#get-preview-app)
   - **Chat Setup & Customization**
@@ -173,6 +172,7 @@ Related searches:
 ```
 </details>
 
+---
 
 #### Retry Message
 Attempt to send or recreate a message that was previously undeliverable or inappropriate.
@@ -190,14 +190,15 @@ Attempt to send or recreate a message that was previously undeliverable or inapp
 
 ```rust
 let chat_code: &str = "sample";
-
 let mut message = api.retry_message(chat_code).await?;
-// or 
+
 let mut message = message.retry().await?;
 
 // Same as #send-message
 ```
 </details>
+
+---
 
 #### Cancel Message
 Cancels a message that is in the process of being sent, useful to prevent duplicates or errors.
@@ -207,12 +208,13 @@ Cancels a message that is in the process of being sent, useful to prevent duplic
 
 ```rust
 let chat_id: i64 = 12345;
-
 api.cancel_message(chat_id).await?;
-// or 
+
 message.cancel().await?;
 ```
 </details>
+
+---
 
 #### Delete Messages
 Deletes one or more messages from a chat based on provided message IDs.
@@ -232,7 +234,6 @@ Deletes one or more messages from a chat based on provided message IDs.
 ```rust
 let chat_id: i64 = 12345;
 let message_ids: Vec<i64> = vec![678910, 11121314];
-
 api.delete_message(chat_id, message_ids).await?;
 
 // delete user message
@@ -243,4 +244,6 @@ message.delete_bot_message().await?;
 message.delete_message_context().await?;
 ```
 </details>
+
+---
 
