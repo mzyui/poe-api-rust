@@ -27,7 +27,7 @@
     - [Get User Info](#get-user-info)
     - [Follow User](#follow-user)
     - [Unfollow User](#unfollow-user)
- - **Chat Setup & Customization**
+  - **Chat Setup & Customization**
     - [Set Default Message Point Limit](#set-default-message-point-limit)
     - [Set Default Bot](#set-default-bot)
     - [Set Chat Context Optimization](#set-chat-context-optimization)
