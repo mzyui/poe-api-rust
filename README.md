@@ -8,11 +8,11 @@
 ## Table of Contents
 
 - [Overview](#overview)
-- [How to get your token](#how-to-get-your-token)
+- How to get your token
   - [Getting `p-b` and `p-lat` cookies (required)](#step-1-retrieve-p-b-and-p-lat-cookies-required)
   - [Getting fromkey (optional)](#step-2-retrieve-fromkey-optional)
 - [Connecting to the API](#connecting-to-the-api)
-- [Documentation](#documentation)
+- Documentation
   - **Message Handling**
     - [Send Message](#send-message)
     - [Retry Message](#retry-message)
@@ -21,7 +21,7 @@
     - [Message Share URL](#message-share-url)
     - [Get Total Cost Points](#total-cost-points)
     - [Get List Preview App](#get-preview-app)
-- **Chat Setup & Customization**
+  - **Chat Setup & Customization**
     - [Set Default Message Point Limit](#set-default-message-point-limit)
     - [Set Default Bot](#set-default-bot)
     - [Set Chat Context Optimization](#set-chat-context-optimization)
@@ -58,7 +58,6 @@
 
 This documentation offers a comprehensive guide to each function available within the API.
 
----
 
 ### How to Get Your Token
 
@@ -88,8 +87,6 @@ There are two methods to get the `formkey`:
    - Paste the following script: `window.ereNdsRqhp2Rd3LEW()`.
    - Copy the resulting output.
 
---- 
-
 ## Connecting to the API
 ```rust
 use poe_api::{api::PoeApi, models::Token};
@@ -101,25 +98,102 @@ let api = PoeApi::new(Token {
 }).await?;
 ```
 
----
-
 ## Documentation
 
 #### Send Message
 
-**Description:**  
-Sends a new message to a specified chat conversation. Supports both text and media messages.
+Sends a new message to a specified model (default `assistant`). Supports both text and media messages.
 
-**Parameters:**
-- `chat_id` (String): Identifier for the target chat.
-- `message` (String): Message content.
+<details>
+<summary><b>Parameters:</b></summary>
 
-**Example:**
 ```rust
-match send_message(String::from("chat_id_4567"), String::from("Hello, world!")) {
-    Ok(_) => println!("Message sent successfully."),
-    Err(e) => eprintln!("Error: {}", e),
+pub struct SendMessageData<'a> {
+    pub bot: &'a str,
+    pub message: &'a str,
+    pub chat_id: Option<i64>,
+    pub files: Vec<FileInput<'a>>,
+}
+
+#[derive(Debug)]
+pub enum FileInput<'a> {
+    Url(&'a str),
+    Local(PathBuf),
 }
 ```
+</details>
+
+<details>
+<summary><b>Example:</b></summary>
+
+```rust
+use poe_api::models::{SendMessageData, FileInput};
+
+// Ask simple questions using `gemini-2.0-flash` model
+let mut message = api.send_message(SendMessageData {
+    bot: "gemini-2.0-flash",
+    message: "what is the result of 2x2?",
+    ..Default::default()
+}).await?;
+
+// Streamed output
+while let Some(chunk) = message.next().await {
+    // Process chunk output or pretty print on terminal directly
+    chunk.print()?;
+}
+
+// Non-streamed output
+let text = message.text().await;
+```
+**Another Example:** where these anime characters came from?
+![Tainaka Ritsu](https://github.com/user-attachments/assets/28a2f066-9612-4f78-ba0a-3cb6b779c7b8)
+```rust
+// Send message to an existing chat thread
+let chat_id = message.chat().inner.chat_id;
+let mut message = api.send_message(SendMessageData {
+    bot: "gemini-2.0-flash",
+    message: "who is she??",
+    chat_id: Some(chat_id),
+    files: vec![
+        FileInput::Local("my-wife.png")
+    ],
+}).await?;
+
+println!("{}", message.text().await);
+```
+**Output:**
+```markdown
+The anime character in the image is Ritsu Tainaka from the anime series K-On!. She is the self-proclaimed president of the Light Music Club and the drummer of the band Ho-kago Tea Time.
+
+
 ---
+
+Related searches:
++ [anime characters in image](https://www.google.com/search?q=anime+characters+in+image&client=app-vertex-grounding-quora-poe)
++ [anime with characters Ritsu Tainaka](https://www.google.com/search?q=anime+with+characters+Ritsu+Tainaka&client=app-vertex-grounding-quora-poe)
+```
+</details>
+
+
+#### Retry Message
+
+Attempt to send or recreate a message that was previously undeliverable or inappropriate.
+
+**Parameters:**
+- `chat_code` (String): Identifier of the chat to retry.
+
+<details>
+<summary><b>Example:</b></summary>
+
+```rust
+
+let chat_code: &str = "sample";
+
+let mut message = api.retry_message(chat_code).await?;
+// or 
+let mut message = message.retry().await?;
+
+// Same as #send-messagw
+```
+</details>
 
