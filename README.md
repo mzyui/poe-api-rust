@@ -409,9 +409,8 @@ Retrieves detailed information about a bot, including its configuration, current
 | --- | --- | --- |
 | `bot_handle`   | `&str`     | Bot handle name |
 
-**How to Get the `bot_handle`:**
-look at the bot's URL! for example: `https://poe.com/Claude-3.7-Sonnet-Reasoning`
-the `bot_handle` is: `Claude-3.7-Sonnet-Reasoning` (the part after `poe.com/`).
+The `bot_handle` on Poe is `Claude-3.7-Sonnet-Reasoning`, found in the URL `https://poe.com/Claude-3.7-Sonnet-Reasoning`.
+
 </details>
 
 <details>
