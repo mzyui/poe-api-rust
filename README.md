@@ -144,17 +144,23 @@ let text = message.text().await;
 **Another Example:** where these anime characters came from?
 
 ![Tainaka Ritsu](https://github.com/user-attachments/assets/28a2f066-9612-4f78-ba0a-3cb6b779c7b8)
+
+
 ```rust
 // Send message to an existing chat thread
 let chat_id = message.chat().inner.chat_id;
-let mut message = api.send_message(SendMessageData {
+let message_data = SendMessageData {
     bot: "gemini-2.0-flash",
     message: "who is she??",
     chat_id: Some(chat_id),
     files: vec![
         FileInput::Local("my-wife.png")
     ],
-}).await?;
+};
+
+let mut message = api.send_message(message_data).await?;
+// or 
+let mut message = message.chat().send_message(message_data).await?;
 
 println!("{}", message.text().await);
 ```
@@ -404,12 +410,8 @@ Retrieves detailed information about a bot, including its configuration, current
 | `bot_handle`   | `&str`     | Bot handle name |
 
 **How to Get the `bot_handle`:**
-
-Just look at the bot's URL! For example:
-
-`https://poe.com/Claude-3.7-Sonnet-Reasoning`
-
-The `bot_handle` is: `Claude-3.7-Sonnet-Reasoning` (the part after `poe.com/`).
+look at the bot's URL! for example: `https://poe.com/Claude-3.7-Sonnet-Reasoning`
+the `bot_handle` is: `Claude-3.7-Sonnet-Reasoning` (the part after `poe.com/`).
 </details>
 
 <details>
