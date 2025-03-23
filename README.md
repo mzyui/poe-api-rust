@@ -101,7 +101,7 @@ let api = PoeApi::new(Token {
 Sends a new message to a specified model (default `assistant`). Supports both text and media messages.
 
 <details>
-<summary><b>Parameters:</b></summary>
+<summary><b>Parameters</b></summary>
 
 ```rust
 pub struct SendMessageData<'a> {
@@ -119,7 +119,7 @@ pub enum FileInput<'a> {
 </details>
 
 <details>
-<summary><b>Example:</b></summary>
+<summary><b>Example</b></summary>
 
 ```rust
 use poe_api::models::{SendMessageData, FileInput};
@@ -176,7 +176,7 @@ Related searches:
 Attempt to send or recreate a message that was previously undeliverable or inappropriate.
 
 <details>
-<summary><b>Parameters:</b></summary>
+<summary><b>Parameters</b></summary>
 
 | Field Name  | Data Type | Description |
 | --- | --- | --- |
@@ -184,7 +184,7 @@ Attempt to send or recreate a message that was previously undeliverable or inapp
 </details>
 
 <details>
-<summary><b>Example:</b></summary>
+<summary><b>Example</b></summary>
 
 ```rust
 let chat_code: &str = "sample";
@@ -202,7 +202,7 @@ let mut message = message.retry().await?;
 Cancels a message that is in the process of being sent, useful to prevent duplicates or errors.
 
 <details>
-<summary><b>Example:</b></summary>
+<summary><b>Example</b></summary>
 
 ```rust
 let chat_id: i64 = 12345;
@@ -218,7 +218,7 @@ message.cancel().await?;
 Deletes one or more messages from a chat based on provided message IDs.
 
 <details>
-<summary><b>Parameters:</b></summary>
+<summary><b>Parameters</b></summary>
 
 | Field Name  | Data Type | Description |
 | --- | --- | --- |
@@ -227,7 +227,7 @@ Deletes one or more messages from a chat based on provided message IDs.
 </details>
 
 <details>
-<summary><b>Example:</b></summary>
+<summary><b>Example</b></summary>
 
 ```rust
 let chat_id: i64 = 12345;
@@ -249,7 +249,7 @@ message.delete_message_context().await?;
 Generates a shareable URL for a specific message, allowing it to be shared externally.
 
 <details>
-<summary><b>Parameters:</b></summary>
+<summary><b>Parameters</b></summary>
 
 | Field Name  | Data Type | Description |
 | --- | --- | --- |
@@ -258,7 +258,7 @@ Generates a shareable URL for a specific message, allowing it to be shared exter
 </details>
 
 <details>
-<summary><b>Example:</b></summary>
+<summary><b>Example</b></summary>
 
 ```rust
 let chat_id: i64 = 12345;
@@ -276,7 +276,7 @@ message.share().await?;
 Calculates the total cost (in points) for a specific message, which can be used for metering or billing purposes.
 
 <details>
-<summary><b>Parameters:</b></summary>
+<summary><b>Parameters</b></summary>
 
 | Field Name  | Data Type | Description |
 | --- | --- | --- |
@@ -284,7 +284,7 @@ Calculates the total cost (in points) for a specific message, which can be used 
 </details>
 
 <details>
-<summary><b>Example:</b></summary>
+<summary><b>Example</b></summary>
 
 ```rust
 let message_code: &str = "abcdef";
@@ -303,7 +303,7 @@ Generates a shareable URL for a preview apps, allowing it to be shared externall
 The "Previews" feature on poe.com allows users to generate and interact with web applications directly, making it possible to create things like games, animations, and data visualizations using AI coding models.
 
 <details>
-<summary><b>Parameters:</b></summary>
+<summary><b>Parameters</b></summary>
 
 | Field Name  | Data Type | Description |
 | --- | --- | --- |
@@ -311,7 +311,7 @@ The "Previews" feature on poe.com allows users to generate and interact with web
 </details>
 
 <details>
-<summary><b>Example:</b></summary>
+<summary><b>Example</b></summary>
 
 ```rust
 let message_id: i64 = 12345;
@@ -325,13 +325,10 @@ message.list_preview_app().await?;
 ---
 
 ### Explore
-Discover available users, bots and AI models.
+Discover available users, bots and AI models. To get a list of valid categories. see the [Get Available Categories](#get-available-categories) section.
 
 <details>
-<summary><b>Parameters:</b></summary>
-
-> [!NOTE]
-> To get a list of valid categories. see the [Get Available Categories](#get-available-categories) section
+<summary><b>Parameters</b></summary>
 
 ```rust
 pub enum EntityType {
@@ -349,7 +346,7 @@ pub struct SearchData<'a> {
 </details>
 
 <details>
-<summary><b>Example:</b></summary>
+<summary><b>Example</b></summary>
 
 ```rust
 use poe_api::search::Entity;
@@ -382,7 +379,7 @@ while let Some(entity) = result.next().await {
 Fetches all available AI model categories, enabling users to quickly find the type of content they are interested in.
 
 <details>
-<summary><b>Example:</b></summary>
+<summary><b>Example</b></summary>
 
 ```rust
 let categories = api.get_available_categories().await?;
@@ -396,11 +393,46 @@ println!("{:?}", categories);
 
 ---
 
+### Get Bot Info
+Retrieves detailed information about a bot, including its configuration, current status, and capabilities.
+
+<details>
+<summary><b>Parameters</b></summary>
+
+| Field Name  | Data Type | Description |
+| --- | --- | --- |
+| `bot_handle`   | `&str`     | Bot handle name |
+
+**How to Get the `bot_handle`:**
+
+Just look at the bot's URL! For example:
+
+`https://poe.com/Claude-3.7-Sonnet-Reasoning`
+
+The `bot_handle` is: `Claude-3.7-Sonnet-Reasoning` (the part after `poe.com/`).
+</details>
+
+<details>
+<summary><b>Example</b></summary>
+
+```rust
+let bot_handle: &str = "Claude-3.7-Sonnet-Reasoning";
+let bot_info = api.get_bot_info(bot_handle).await?;
+println!("{:?}", bot_info);
+```
+**Output:**
+```markdown
+Some(BotInfo { id: "Qm90OjEwMjY=", bot_id: 1026, handle: "Claude-3.7-Sonnet-Reasoning", display_name: "Claude-3.7-Sonnet-Reasoning", model: Some("flannel_reasoning"), picture_url: Some("https://qph.cf2.poecdn.net/main-thumb-pb-1026-200-fvvsiofehkfrtswcutfmahqytzyfadsp.jpeg"), description: "Anthropic's most intelligent model (with reasoning capabilities on by default). Claude 3.7 Sonnet is a hybrid reasoning model, producing near-instant responses or extended, step-by-step thinking. Recommended for complex math or coding problems. Supports a 200k token context window.", powered_by: Some("Powered by Anthropic."), tags: ["OFFICIAL"], display_message_point_price: 123, introduction: Some(""), is_created_by_poe_user_account: false })
+```
+</details>
+
+---
+
 ### Set Default Message Point Limit 
 Sets the default limit on message points per conversation. This function helps enforce usage policies or manage message size constraints.
 
 <details>
-<summary><b>Parameters:</b></summary>
+<summary><b>Parameters</b></summary>
 
 | Field Name  | Data Type | Description |
 | --- | --- | --- |
@@ -408,7 +440,7 @@ Sets the default limit on message points per conversation. This function helps e
 </details>
 
 <details>
-<summary><b>Example:</b></summary>
+<summary><b>Example</b></summary>
 
 ```rust
 let limit: usize = 420;
