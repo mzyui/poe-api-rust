@@ -71,7 +71,7 @@ This documentation offers a comprehensive guide to each function available withi
 
 #### Step 2: Retrieve `formkey` (Optional)
 > [!NOTE]
-> The **poe-api-wrapper** automatically retrieves the `formkey` for you. If it fails, follow the steps below to obtain the token manually.
+> The **poe-api-rust** automatically retrieves the `formkey` for you. If it fails, follow the steps below to obtain the token manually.
 
 There are two methods to get the `formkey`:
 
@@ -99,9 +99,7 @@ let api = PoeApi::new(Token {
 ```
 
 ## Documentation
-
 #### Send Message
-
 Sends a new message to a specified model (default `assistant`). Supports both text and media messages.
 
 <details>
@@ -128,6 +126,7 @@ pub enum FileInput<'a> {
 
 ```rust
 use poe_api::models::{SendMessageData, FileInput};
+use futures_util::StreamExt;
 
 // Ask simple questions using `gemini-2.0-flash` model
 let mut message = api.send_message(SendMessageData {
@@ -176,7 +175,6 @@ Related searches:
 
 
 #### Retry Message
-
 Attempt to send or recreate a message that was previously undeliverable or inappropriate.
 
 <details>
@@ -189,7 +187,6 @@ Attempt to send or recreate a message that was previously undeliverable or inapp
 <summary><b>Example:</b></summary>
 
 ```rust
-
 let chat_code: &str = "sample";
 
 let mut message = api.retry_message(chat_code).await?;
@@ -197,6 +194,21 @@ let mut message = api.retry_message(chat_code).await?;
 let mut message = message.retry().await?;
 
 // Same as #send-message
+```
+</details>
+
+#### Cancel Message
+Cancels a message that is in the process of being sent, useful to prevent duplicates or errors.
+
+<details>
+<summary><b>Example:</b></summary>
+
+```rust
+let chat_id: i64 = 12345;
+
+let is_cancelled = api.cancel_message(chat_id).await?;
+// or 
+let is_cancelled = message.retry().await?;
 ```
 </details>
 
