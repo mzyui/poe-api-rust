@@ -330,7 +330,7 @@ Discover available users, bots and AI models.
 <details>
 <summary><b>Parameters:</b></summary>
 
-> [!Note]
+> [!NOTE]
 > To get a list of valid categories. see the [Get Available Categories](#get-available-categories) section
 
 ```rust
