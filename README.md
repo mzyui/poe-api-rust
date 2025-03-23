@@ -145,6 +145,7 @@ while let Some(chunk) = message.next().await {
 let text = message.text().await;
 ```
 **Another Example:** where these anime characters came from?
+
 ![Tainaka Ritsu](https://github.com/user-attachments/assets/28a2f066-9612-4f78-ba0a-3cb6b779c7b8)
 ```rust
 // Send message to an existing chat thread
@@ -164,7 +165,6 @@ println!("{}", message.text().await);
 ```markdown
 The anime character in the image is Ritsu Tainaka from the anime series K-On!. She is the self-proclaimed president of the Light Music Club and the drummer of the band Ho-kago Tea Time.
 
-
 ---
 
 Related searches:
@@ -180,7 +180,9 @@ Attempt to send or recreate a message that was previously undeliverable or inapp
 <details>
 <summary><b>Parameters:</b></summary>
 
-- `chat_code` (String): Identifier of the chat to retry.
+| Field Name  | Data Type | Description |
+| --- | --- | --- |
+| `chat_code` | `&str` | Identifier of the chat to retry. |
 </details>
 
 <details>
@@ -206,9 +208,39 @@ Cancels a message that is in the process of being sent, useful to prevent duplic
 ```rust
 let chat_id: i64 = 12345;
 
-let is_cancelled = api.cancel_message(chat_id).await?;
+api.cancel_message(chat_id).await?;
 // or 
-let is_cancelled = message.retry().await?;
+message.cancel().await?;
+```
+</details>
+
+#### Delete Messages
+Deletes one or more messages from a chat based on provided message IDs.
+
+<details>
+<summary><b>Parameters:</b></summary>
+
+| Field Name  | Data Type | Description |
+| --- | --- | --- |
+| `chat_id`   | `i64`     | Chat identifier. |
+| `message_ids` | `Vec<i64>`| A vector of message IDs to delete. |
+</details>
+
+<details>
+<summary><b>Example:</b></summary>
+
+```rust
+let chat_id: i64 = 12345;
+let message_ids: Vec<i64> = vec![678910, 11121314];
+
+api.delete_message(chat_id, message_ids).await?;
+
+// delete user message
+message.delete_user_message().await?;
+// delete bot message
+message.delete_bot_message().await?;
+// or both messages
+message.delete_message_context().await?;
 ```
 </details>
 
