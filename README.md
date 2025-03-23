@@ -98,7 +98,7 @@ let api = PoeApi::new(Token {
 ```
 
 ## Documentation
-#### Send Message
+### Send Message
 Sends a new message to a specified model (default `assistant`). Supports both text and media messages.
 
 <details>
@@ -174,7 +174,7 @@ Related searches:
 
 ---
 
-#### Retry Message
+### Retry Message
 Attempt to send or recreate a message that was previously undeliverable or inappropriate.
 
 <details>
@@ -200,7 +200,7 @@ let mut message = message.retry().await?;
 
 ---
 
-#### Cancel Message
+### Cancel Message
 Cancels a message that is in the process of being sent, useful to prevent duplicates or errors.
 
 <details>
@@ -216,7 +216,7 @@ message.cancel().await?;
 
 ---
 
-#### Delete Messages
+### Delete Messages
 Deletes one or more messages from a chat based on provided message IDs.
 
 <details>
