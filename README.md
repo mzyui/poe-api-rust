@@ -17,9 +17,9 @@
     - [Retry Message](#retry-message)
     - [Cancel Message](#cancel-message)
     - [Delete Messages](#delete-messages)
-    - [Get Message Share URL](#message-share-url)
-    - [Get Total Cost Points](#total-cost-points)
-    - [Get List Preview App](#get-preview-app)
+    - [Get Message Share URL](#get-message-share-url)
+    - [Get Total Cost Points](#get-total-cost-points)
+    - [Get List Preview App](#get-list-preview-app)
   - **Chat Setup & Customization**
     - [Set Default Message Point Limit](#set-default-message-point-limit)
     - [Set Default Bot](#set-default-bot)
@@ -225,7 +225,7 @@ Deletes one or more messages from a chat based on provided message IDs.
 | Field Name  | Data Type | Description |
 | --- | --- | --- |
 | `chat_id`   | `i64`     | Chat identifier. |
-| `message_ids` | `Vec<i64>`| A vector of message IDs to delete. |
+| `message_ids` | `Vec<i64>`| A vector of message IDs. |
 </details>
 
 <details>
@@ -246,4 +246,54 @@ message.delete_message_context().await?;
 </details>
 
 ---
+
+### Get Message Share URL 
+Generates a shareable URL for a specific message, allowing it to be shared externally.
+
+<details>
+<summary><b>Parameters:</b></summary>
+
+| Field Name  | Data Type | Description |
+| --- | --- | --- |
+| `chat_id`   | `i64`     | Chat identifier. |
+| `message_ids` | `Vec<i64>`| A vector of message IDs. |
+</details>
+
+<details>
+<summary><b>Example:</b></summary>
+
+```rust
+let chat_id: i64 = 12345;
+let message_ids: Vec<i64> = vec![678910, 11121314];
+api.get_message_share_url(chat_id, message_ids).await?;
+
+// delete user message
+message.share().await?;
+```
+</details>
+
+---
+
+### Get Total Cost Points 
+Calculates the total cost (in points) for a specific message, which can be used for metering or billing purposes.
+
+<details>
+<summary><b>Parameters:</b></summary>
+
+| Field Name  | Data Type | Description |
+| --- | --- | --- |
+| `message_code`   | `&str`     | Message identifier. |
+</details>
+
+<details>
+<summary><b>Example:</b></summary>
+
+```rust
+let message_code: &str = "abcdef";
+api.get_total_cost_points(message_code).await?;
+
+// or
+message.total_cost_points().await?;
+```
+</details>
 
