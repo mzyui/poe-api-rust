@@ -7,11 +7,21 @@
 
 ## Table of Contents
 
-- [**Overview**](#overview)
-- **Functionality**
-  - **Chat Setup & Customization**
-    - [Explore](#explore)
-    - [Get Available Categories](#available-categories)
+- [Overview](#overview)
+- [How to get your token](#how-to-get-your-token)
+  - [Getting `p-b` and `p-lat` cookies (required)](#step-1-retrieve-p-b-and-p-lat-cookies-required)
+  - [Getting fromkey (optional)](#step-2-retrieve-fromkey-optional)
+- [Connecting to the API](#connecting-to-the-api)
+- [Documentation](#documentation)
+  - **Message Handling**
+    - [Send Message](#send-message)
+    - [Retry Message](#retry-message)
+    - [Cancel Message](#cancel-message)
+    - [Delete Messages](#delete-messages)
+    - [Message Share URL](#message-share-url)
+    - [Get Total Cost Points](#total-cost-points)
+    - [Get List Preview App](#get-preview-app)
+- **Chat Setup & Customization**
     - [Set Default Message Point Limit](#set-default-message-point-limit)
     - [Set Default Bot](#set-default-bot)
     - [Set Chat Context Optimization](#set-chat-context-optimization)
@@ -21,23 +31,16 @@
     - [Delete Chat](#delete-chat)
     - [Import Chat](#import-chat)
     - [Chat History](#chat-history)
-    - [Delete Messages](#delete-messages)
     - [Clear Chat Context](#clear-chat-context)
-  - **Message Handling**
-    - [Send Message](#send-message)
-    - [Retry Message](#retry-message)
-    - [Cancel Message](#cancel-message)
-    - [Message Share URL](#message-share-url)
-    - [Get Total Cost Points](#total-cost-points)
   - **User & Bot Management**
+    - [Explore](#explore)
     - [Bot Info](#bot-info)
     - [User Info](#user-info)
-  - **Social Features**
     - [Follow User](#follow-user)
     - [Unfollow User](#unfollow-user)
-  - **Settings**
+  - **Misc**
     - [Get Settings](#settings)
-- [**Usage**](#usage)
+    - [Get Available Categories](#available-categories)
 - [**Installation**](#installation)
 - [**License**](#license)
 
@@ -56,3 +59,67 @@
 This documentation offers a comprehensive guide to each function available within the API.
 
 ---
+
+### How to Get Your Token
+
+#### Step 1: Retrieve `p-b` and `p-lat` Cookies (Required)
+1. Sign in at [Poe](https://poe.com/).
+2. Open Developer Tools:
+   - **Chromium**: Press `F12` or right-click and select **Inspect**, then navigate to **Application** > **Cookies** > **poe.com**.
+   - **Firefox**: Press `F12` or right-click and select **Inspect**, then go to **Storage** > **Cookies**.
+   - **Safari**: Press `F12` or right-click and select **Inspect**, then access **Storage** > **Cookies**.
+3. Copy the values of the `p-b` and `p-lat` cookies.
+
+#### Step 2: Retrieve `formkey` (Optional)
+> [!NOTE]
+> The **poe-api-wrapper** automatically retrieves the `formkey` for you. If it fails, follow the steps below to obtain the token manually.
+
+There are two methods to get the `formkey`:
+
+1. **Method 1: Using Network Tab**
+   - Open Developer Tools (`F12` or right-click and select **Inspect**).
+   - Navigate to **Network** > **gql_POST** > **Headers**.
+   - Copy the value of `Poe-Formkey`.
+
+2. **Method 2: Using Console**
+   - Open Developer Tools (`F12` or right-click and select **Inspect**).
+   - Go to the **Console** tab.
+   - Type: `allow pasting` and press Enter.
+   - Paste the following script: `window.ereNdsRqhp2Rd3LEW()`.
+   - Copy the resulting output.
+
+--- 
+
+## Connecting to the API
+```rust
+use poe_api::{api::PoeApi, models::Token};
+
+let api = PoeApi::new(Token {
+    p_b: "P-B", // required
+    p_lat: "P-LAT", // required
+    formkey: Some("fromkey"), // optional
+}).await?;
+```
+
+---
+
+## Documentation
+
+#### Send Message
+
+**Description:**  
+Sends a new message to a specified chat conversation. Supports both text and media messages.
+
+**Parameters:**
+- `chat_id` (String): Identifier for the target chat.
+- `message` (String): Message content.
+
+**Example:**
+```rust
+match send_message(String::from("chat_id_4567"), String::from("Hello, world!")) {
+    Ok(_) => println!("Message sent successfully."),
+    Err(e) => eprintln!("Error: {}", e),
+}
+```
+---
+
