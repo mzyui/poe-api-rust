@@ -179,8 +179,11 @@ Related searches:
 
 Attempt to send or recreate a message that was previously undeliverable or inappropriate.
 
-**Parameters:**
+<details>
+<summary><b>Parameters:</b></summary>
+
 - `chat_code` (String): Identifier of the chat to retry.
+</details>
 
 <details>
 <summary><b>Example:</b></summary>
@@ -193,7 +196,7 @@ let mut message = api.retry_message(chat_code).await?;
 // or 
 let mut message = message.retry().await?;
 
-// Same as #send-messagw
+// Same as #send-message
 ```
 </details>
 
