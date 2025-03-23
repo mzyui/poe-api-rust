@@ -96,7 +96,8 @@ let api = PoeApi::new(Token {
 }).await?;
 ```
 
-## Documentation
+## Documentation (Work in progress)
+
 ### Send Message
 Sends a new message to a specified model (default `assistant`). Supports both text and media messages.
 
@@ -303,7 +304,7 @@ message.total_cost_points().await?;
 
 ---
 
-### Get List Preview App
+### Get List Preview Apps
 Generates a shareable URL for a preview apps, allowing it to be shared externally.
 
 The "Previews" feature on poe.com allows users to generate and interact with web applications directly, making it possible to create things like games, animations, and data visualizations using AI coding models.
