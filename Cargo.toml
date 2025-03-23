@@ -1,0 +1,39 @@
+[package]
+name = "poe-api-rust"
+version = "0.1.4"
+edition = "2021"
+
+[lib]
+name = "poe_api"
+
+[[bin]]
+name = "poe-cli"
+path = "src/main.rs"
+
+[dependencies]
+anyhow = "1.0.95"
+chrono = { version = "0.4.40", features = ["serde"] }
+futures-util = "0.3.31"
+lazy_static = "1.5.0"
+log = "0.4.25"
+md5 = "0.7.0"
+mime2ext = "0.1.53"
+quickjs-rs = "0.5.2"
+rand = "0.9.0"
+regex = "1.11.1"
+reqwest = { version = "0.12.12", features = ["cookies", "json", "multipart", "stream"] }
+scraper = "0.22.0"
+serde = { version = "1.0.217", features = ["derive"] }
+serde_json = { version = "1.0.138", features = ["preserve_order"] }
+tokio-tungstenite = "0.26.1"
+tree_magic_mini = { version = "3.1.6", features = ["with-gpl-data"] }
+tokio = { version = "1.43.0", features = ["rt-multi-thread", "macros"] }
+
+clap = { version = "4.5.32", features = ["derive", "env"], optional = true }
+stderrlog = {version = "0.6.0", optional = true}
+crossterm = { version = "0.28.1", optional = true }
+
+[features]
+default = ["cli", "pretty-print"]
+pretty-print = ["crossterm"]
+cli = ["clap", "stderrlog"]
