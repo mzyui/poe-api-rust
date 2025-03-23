@@ -22,7 +22,7 @@
     - [Get List Preview Apps](#get-list-preview-apps)
   - **User & Bot Management**
     - [Explore](#explore)
-    - [Get Available Categories](#available-categories)
+    - [Get Available Categories](#get-available-categories)
     - [Get Bot Info](#get-bot-info)
     - [Get User Info](#get-user-info)
     - [Follow User](#follow-user)
@@ -60,7 +60,7 @@ This documentation offers a comprehensive guide to each function available withi
 ### How to Get Your Token
 
 #### Step 1: Retrieve `p-b` and `p-lat` Cookies (Required)
-1. Sign in at [Poe](https://poe.com/).
+1. Sign in at [poe.com](https://poe.com/).
 2. Open Developer Tools:
    - **Chromium**: Press `F12` or right-click and select **Inspect**, then navigate to **Application** > **Cookies** > **poe.com**.
    - **Firefox**: Press `F12` or right-click and select **Inspect**, then go to **Storage** > **Cookies**.
@@ -330,6 +330,9 @@ Discover available users, bots and AI models.
 <details>
 <summary><b>Parameters:</b></summary>
 
+> [!Note]
+> To get a list of valid categories. see the [Get Available Categories](#get-available-categories) section
+
 ```rust
 pub enum EntityType {
     User,
@@ -369,6 +372,25 @@ while let Some(entity) = result.next().await {
         }
     }
 }
+```
+
+</details>
+
+---
+
+### Get Available Categories 
+Fetches all available AI model categories, enabling users to quickly find the type of content they are interested in.
+
+<details>
+<summary><b>Example:</b></summary>
+
+```rust
+let categories = api.get_available_categories().await?;
+println!("{:?}", categories);
+```
+**Output:**
+```markdown
+["Official", "Reasoning", "Apps", "Search", "Image generation", "Audio and video", "For you", "Popular", "Funny", "Roleplay", "AI", "Utilities", "Programming", "Hobbies", "Learning", "Game Apps", "Featured", "Professional", "Creative writing", "Game Bots", "Advice", "Mind", "Translation", "Text analysis", "New"]
 ```
 </details>
 
