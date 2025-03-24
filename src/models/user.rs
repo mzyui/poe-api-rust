@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 pub struct UserInfo {
     pub id: String,
     pub uid: i64,
-    #[serde(rename = "nullableHandle")]
+    #[serde(alias = "nullableHandle", default)]
     pub handle: String,
     pub full_name: String,
     pub follower_count: i64,
