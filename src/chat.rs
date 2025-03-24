@@ -33,10 +33,6 @@ impl<'a> ChatContext<'a> {
         self.api.clear_chat_context(self.inner.chat_id).await
     }
 
-    pub fn history(&mut self) -> ChatHistory {
-        self.api.chat_history()
-    }
-
     pub async fn set_title(&mut self, new_title: &str) -> anyhow::Result<bool> {
         if self
             .api
