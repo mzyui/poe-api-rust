@@ -94,7 +94,7 @@ To manage dependencies and build your project, use Cargo. You can integrate the 
 poe-api = { git = "https://github.com/zevtyardt/poe-api-rust", default-features = false }
 ```
 
-### Command-Line Interface
+##### Command-Line Interface
 
 This library also offers a command-line interface. To install it directly, run:
 
