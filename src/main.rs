@@ -93,10 +93,10 @@ async fn main() -> anyhow::Result<()> {
             eprintln!("{}", "-".repeat(25));
             eprintln!("- Chat title: {}", message.title());
             eprintln!("- Chat id: {}", message.chat().inner.chat_id);
-            eprintln!("- Share url: {}", message.share().await?);
+            eprintln!("- Shareable  url: {}", message.share().await?);
             let preview_apps = message.get_list_preview_app().await?;
             if !preview_apps.is_empty() {
-                eprintln!("- Preview App List:");
+                eprintln!("- Preview app list:");
                 for (index, url) in preview_apps.iter().enumerate() {
                     eprintln!("  - App-{}: {}", index, url);
                 }
