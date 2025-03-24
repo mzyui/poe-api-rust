@@ -10,9 +10,9 @@
 - [How to get your token](#how-to-get-your-token)
   - [Getting `p-b` and `p-lat` cookies (required)](#step-1-retrieve-p-b-and-p-lat-cookies-required)
   - [Getting fromkey (optional)](#step-2-retrieve-fromkey-optional)
-- [**Installation**](#installation)
+- [Installation](#installation)
 - [Connecting to the API](#connecting-to-the-api)
-- Documentation
+- [Documentation](#documentation)
   - **Message Handling**
     - [Send Message](#send-message)
     - [Retry Message](#retry-message)
@@ -41,7 +41,7 @@
     - [Clear Chat Context](#clear-chat-context)
   - **Misc**
     - [Get Settings](#settings)
-- [**License**](#license)
+- [License](#license)
 
 ---
 
