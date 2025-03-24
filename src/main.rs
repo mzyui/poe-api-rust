@@ -107,7 +107,7 @@ async fn main() -> anyhow::Result<()> {
             );
             eprintln!(
                 "- Remaining point: {}",
-                api.settings().await?.message_point_balance()
+                api.get_settings().await?.message_point_balance()
             );
         }
     }
