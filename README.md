@@ -125,7 +125,7 @@ Sends a new message to a specified AI model or bot name. Supports both text and 
 
 ```rust
 pub struct SendMessageData<'a> {
-    pub bot: &'a str,
+    pub bot_handle: &'a str,
     pub message: &'a str,
     pub chat_id: Option<i64>,
     pub files: Vec<FileInput<'a>>,
@@ -147,7 +147,7 @@ use futures_util::StreamExt;
 
 // Ask simple questions using `gemini-2.0-flash` model
 let mut message = api.send_message(SendMessageData {
-    bot: "gemini-2.0-flash",
+    bot_handle: "gemini-2.0-flash",
     message: "what is the result of 2x2?",
     ..Default::default()
 }).await?;
@@ -164,7 +164,6 @@ let text = message.text().await;
 **Another Example:** where these anime characters came from?
 
 ![Tainaka Ritsu](https://github.com/user-attachments/assets/28a2f066-9612-4f78-ba0a-3cb6b779c7b8)
-
 
 ```rust
 // Send message to an existing chat thread
@@ -206,7 +205,7 @@ Attempt to send or recreate a message that was previously undeliverable or inapp
 
 | Field Name  | Data Type | Description |
 | --- | --- | --- |
-| `chat_code` | `&str` | Identifier of the chat to retry. |
+| `chat_code` | `&str` | Chat Identifier |
 </details>
 
 <details>
@@ -232,7 +231,7 @@ Cancels a message that is in the process of being sent, useful to prevent duplic
 
 | Field Name  | Data Type | Description |
 | --- | --- | --- |
-| `chat_id` | `i64` | Unique identifier for the chat |
+| `chat_id`   | `i64`     | Chat identifier. |
 </details>
 
 <details>
@@ -436,9 +435,6 @@ Retrieves detailed information about a bot, including its configuration, current
 | Field Name  | Data Type | Description |
 | --- | --- | --- |
 | `bot_handle`   | `&str`     | Bot handle name |
-
-The `bot_handle` on Poe is `Claude-3.7-Sonnet-Reasoning`, found in the URL `https://poe.com/Claude-3.7-Sonnet-Reasoning`.
-
 </details>
 
 <details>
@@ -492,7 +488,7 @@ Adds the specified user to your follow list. This is useful for tracking updates
 
 | Field Name  | Data Type | Description |
 | --- | --- | --- |
-| `user_id`   | `i64`     | Identifier of user to follow |
+| `user_id`   | `i64`     | User identifier |
 </details>
 
 <details>
@@ -514,7 +510,7 @@ Removes the specified user from your follow list.
 
 | Field Name  | Data Type | Description |
 | --- | --- | --- |
-| `user_id`   | `i64`     | Identifier of user to follow |
+| `user_id`   | `i64`     | User identifier |
 </details>
 
 <details>
@@ -580,7 +576,7 @@ Enables or disables context optimization for a chat session, which can improve r
 
 | Field Name  | Data Type | Description |
 | --- | --- | --- |
-| `chat_id` | `i64` | Unique identifier for the chat |
+| `chat_id` | `i64` | Chat identifier |
 | `enabled` | `bool` | Flag to enable (`true`) or disable (`false`) optimization |
 </details>
 
@@ -604,7 +600,7 @@ Updates the title of an existing chat conversation.
 
 | Field Name  | Data Type | Description |
 | --- | --- | --- |
-| `chat_id` | `i64` | Unique identifier for the chat |
+| `chat_id` | `i64` | Chat identifier |
 | `new_title` | `&str` | New title for the chat |
 </details>
 
@@ -615,6 +611,77 @@ Updates the title of an existing chat conversation.
 let chat_id: i64 = 420;
 let new_title: &str = "ayonima";
 api.set_new_title(chat_id, new_title).await?;
+```
+</details>
+
+---
+
+### Purge All Conversations 
+Removes all chat conversations from the system, effectively resetting the chat history.
+
+<details>
+<summary><b>Example</b></summary>
+
+```rust
+api.purge_all_conversations().await?;
+```
+</details>
+
+---
+
+### Delete Chat 
+Deletes a specific chat session identified by its unique ID.
+
+<details>
+<summary><b>Parameters</b></summary>
+
+| Field Name  | Data Type | Description |
+| --- | --- | --- |
+| `chat_id`   | `i64`     | Chat identifier. |
+</details>
+
+<details>
+<summary><b>Example</b></summary>
+
+```rust
+let chat_id: i64 = 420;
+api.purge_all_conversations(chat_id).await?;
+```
+</details>
+
+---
+
+### Import Chat 
+Imports chat data from an external source. This can be useful for migrating or restoring conversations.
+
+<details>
+<summary><b>Parameters</b></summary>
+
+| Field Name  | Data Type | Description |
+| --- | --- | --- |
+| `chat_code` | `&str` | Chat Identifier |
+</details>
+
+<details>
+<summary><b>Example</b></summary>
+
+```rust
+let chat_code: &str = "sample";
+api.import_chat(chat_code).await?;
+```
+</details>
+
+---
+### Chat History 
+Retrieves the history of chat conversation.
+
+<details>
+<summary><b>Example</b></summary>
+
+```rust
+while let Some(chat) = api.chat_history() {
+    dbg!(chat);
+}
 ```
 </details>
 
