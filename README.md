@@ -118,7 +118,7 @@ let api = PoeApi::new(Token {
 ## Documentation (Work in progress)
 
 ### Send Message
-Sends a new message to a specified model (default `assistant`). Supports both text and media messages.
+Sends a new message to a specified AI model or bot name. Supports both text and media messages.
 
 <details>
 <summary><b>Parameters</b></summary>
@@ -538,6 +538,28 @@ Sets the default limit on message points per conversation. This function helps e
 let limit: usize = 420;
 api.set_default_message_point_limit(limit).await?;
 ```
+
+---
+
+### Set Default Bot
+Assigns a default bot to the chat system for cases where no specific bot is selected.
+
+<details>
+<summary><b>Parameters</b></summary>
+
+| Field Name  | Data Type | Description |
+| --- | --- | --- |
+| `bot_id`   | `i64`     | Bot identifier |
+</details>
+
+<details>
+<summary><b>Example</b></summary>
+
+```rust
+let bot_id: i64 = 420;
+api.set_default_bot(bot_id).await?;
+```
+</details>
 
 ---
 
