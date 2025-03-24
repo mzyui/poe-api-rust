@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::{api::PoeApi, history::ChatHistory, message::MessageContext, models::SendMessageData};
+use crate::{api::PoeApi, message::MessageContext, models::SendMessageData};
 
 #[derive(Clone, Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
