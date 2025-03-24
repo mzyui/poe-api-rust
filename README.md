@@ -40,7 +40,7 @@
     - [Chat History](#chat-history)
     - [Clear Chat Context](#clear-chat-context)
   - **Misc**
-    - [Get Settings](#settings)
+    - [Get Settings](#get-settings)
 - [License](#license)
 
 ---
@@ -587,6 +587,9 @@ Enables or disables context optimization for a chat session, which can improve r
 let chat_id: i64 = 420;
 let enabled: bool = false;
 api.set_chat_context_optimization(chat_id, enabled).await?;
+
+// or
+message.chat().set_context_optimization(enabled).await?;
 ```
 </details>
 
@@ -611,6 +614,9 @@ Updates the title of an existing chat conversation.
 let chat_id: i64 = 420;
 let new_title: &str = "ayonima";
 api.set_new_title(chat_id, new_title).await?;
+
+// or 
+message.chat().set_title(new_title).await?;
 ```
 </details>
 
@@ -646,6 +652,9 @@ Deletes a specific chat session identified by its unique ID.
 ```rust
 let chat_id: i64 = 420;
 api.purge_all_conversations(chat_id).await?;
+
+// or 
+message.chat().delete().await?;
 ```
 </details>
 
@@ -685,3 +694,73 @@ while let Some(chat) = api.chat_history() {
 ```
 </details>
 
+---
+
+### Clear Chat Context 
+Resets the context of a specific chat conversation by clearing any stored temporary data. This can help restart a conversation without any residual context.
+
+<details>
+<summary><b>Parameters</b></summary>
+
+| Field Name  | Data Type | Description |
+| --- | --- | --- |
+| `chat_id` | `i64` | Chat Identifier |
+</details>
+
+<details>
+<summary><b>Example</b></summary>
+
+```rust
+let chat_id: i64 = 123456;
+api.clear_chat_context(chat_id).await?;
+
+// or 
+message.chat().clear_context().await?;
+```
+</details>
+
+---
+
+### Get Settings 
+Get remaining points and additional info.
+
+<details>
+<summary><b>Example</b></summary>
+
+```rust 
+let my_setting = api.get_settings().await?;
+println!("{:?}", my_setting);
+```
+**Output:**
+```markdown
+
+MySettings { uid: 659168979, default_bot: DefaultBot { display_name: "Assistant", bot_id: 3002, id: "Qm90OjMwMDI=" }, message_point_info: MessagePointInfo { message_point_reset_time: +57199-01-26T05:30:00Z, message_point_balance: 1827, total_message_point_allotment: 3000, all_chat_default_point_price_threshold_per_message: 500 }, primary_phone_number: None, primary_email: Some("[REDACTED]"), confirmed_emails: ["[REDACTED]"], has_active_subscription: false, enable_gtm_event_sending: true, viewer_country_code: "ID", global_context_optimization_status: true, enable_global_context_optimization: true, has_unread_message: false }
+```
+</details>
+
+---
+
+## LICENSE 
+```text
+MIT License
+
+Copyright (c) 2025 zevtyardt
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
