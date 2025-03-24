@@ -430,6 +430,77 @@ Some(BotInfo { id: "Qm90OjEwMjY=", bot_id: 1026, handle: "Claude-3.7-Sonnet-Reas
 
 ---
 
+### Get User Info
+Fetches profile details for a specific user.
+
+<details>
+<summary><b>Parameters</b></summary>
+
+| Field Name  | Data Type | Description |
+| --- | --- | --- |
+| `user_handle`   | `&str`     | User handle name |
+</details>
+
+<details>
+<summary><b>Example</b></summary>
+
+```rust
+let user_handle: &str = "openai";
+let user_info = api.get_user_info(bot_handle).await?;
+println!("{:?}", user_info);
+```
+**Output:**
+```markdown
+Some(UserInfo { id: "UG9lVXNlcjoyOTEwNDAwODc5", uid: 2910400879, handle: "openai", full_name: "OpenAI", follower_count: 2470, medium_profile_photo_url: Some("https://qph.cf2.poecdn.net/main-thumb-2910400879-100-wrfgcbmfjrhquvwlxvypitmawpovrxoi.jpeg"), profile_photo_url: Some("https://qph.cf2.poecdn.net/main-thumb-2910400879-200-wrfgcbmfjrhquvwlxvypitmawpovrxoi.jpeg") })
+```
+</details>
+
+---
+
+### Follow User
+Adds the specified user to your follow list. This is useful for tracking updates and activities.
+
+<details>
+<summary><b>Parameters</b></summary>
+
+| Field Name  | Data Type | Description |
+| --- | --- | --- |
+| `user_id`   | `i64`     | Identifier of user to follow |
+</details>
+
+<details>
+<summary><b>Example</b></summary>
+
+```rust
+let user_id: i64 = 123456;
+api.follow_user(user_id).await?;
+```
+</details>
+
+---
+
+### Unfollow User
+Removes the specified user from your follow list.
+
+<details>
+<summary><b>Parameters</b></summary>
+
+| Field Name  | Data Type | Description |
+| --- | --- | --- |
+| `user_id`   | `i64`     | Identifier of user to follow |
+</details>
+
+<details>
+<summary><b>Example</b></summary>
+
+```rust
+let user_id: i64 = 123456;
+api.unfollow_user(user_id).await?;
+```
+</details>
+
+---
+
 ### Set Default Message Point Limit 
 Sets the default limit on message points per conversation. This function helps enforce usage policies or manage message size constraints.
 
