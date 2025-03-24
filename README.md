@@ -10,6 +10,7 @@
 - How to get your token
   - [Getting `p-b` and `p-lat` cookies (required)](#step-1-retrieve-p-b-and-p-lat-cookies-required)
   - [Getting fromkey (optional)](#step-2-retrieve-fromkey-optional)
+- [**Installation**](#installation)
 - [Connecting to the API](#connecting-to-the-api)
 - Documentation
   - **Message Handling**
@@ -40,7 +41,6 @@
     - [Clear Chat Context](#clear-chat-context)
   - **Misc**
     - [Get Settings](#settings)
-- [**Installation**](#installation)
 - [**License**](#license)
 
 ---
@@ -84,6 +84,25 @@ There are two methods to get the `formkey`:
    - Type: `allow pasting` and press Enter.
    - Paste the following script: `window.ereNdsRqhp2Rd3LEW()`.
    - Copy the resulting output.
+
+## Installation
+
+To manage dependencies and build your project, use Cargo. You can integrate the API functions by adding the module file to your Cargo project structure. Here’s a basic setup:
+
+```toml
+[dependencies]
+poe_api = { git = "https://github.com/zevtyardt/poe-api-rust", default-features = false }
+```
+
+### Command-Line Interface
+
+This library also offers a command-line interface. To install it directly, run:
+
+```bash
+cargo install --git "https://github.com/zevtyardt/poe-api-rust"
+```
+
+You can then execute the CLI using the `poe-cli` command.
 
 ## Connecting to the API
 ```rust
