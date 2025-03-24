@@ -35,12 +35,7 @@ struct Args {
     fromkey: Option<String>,
 
     /// Specify one of the bot names on poe.com.
-    #[clap(
-        short = 'b',
-        long,
-        default_value = "assistant",
-        value_name = "BOT_NAME"
-    )]
+    #[clap(short = 'b', long, value_name = "BOT_NAME")]
     bot: String,
 
     /// Names of the media files to upload.
