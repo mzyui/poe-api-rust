@@ -17,10 +17,7 @@ use reqwest::{
 };
 use serde_json::{json, Value};
 use tokio::{net::TcpStream, time};
-use tokio_tungstenite::{
-    tungstenite,
-    MaybeTlsStream, WebSocketStream,
-};
+use tokio_tungstenite::{tungstenite, MaybeTlsStream, WebSocketStream};
 
 use crate::{
     bot::BotInfo,
@@ -458,10 +455,17 @@ impl PoeApi {
                 RequestPath::GqlUploadPost
             };
 
+            let bot = if payload.bot.is_empty() {
+                let my_settings = self.settings().await?;
+                my_settings.default_bot.display_name
+            } else {
+                payload.bot.to_string()
+            };
+
             self.connect_websocket().await?;
             let mut data = json!({
                     "chatId": null,
-                    "bot": payload.bot,
+                    "bot": bot,
                     "query": payload.message,
                     "shouldFetchChat": true,
                     "source": {
