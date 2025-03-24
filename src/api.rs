@@ -440,7 +440,7 @@ impl PoeApi {
         payload: SendMessageData<'_>,
     ) -> anyhow::Result<MessageContext> {
         let bot = if payload.bot_handle.is_empty() {
-            let my_settings = self.settings().await?;
+            let my_settings = self.get_settings().await?;
             my_settings.default_bot.display_name
         } else {
             payload.bot_handle.to_string()
@@ -862,13 +862,14 @@ impl PoeApi {
      * +------+
      */
 
-    pub async fn settings(&mut self) -> anyhow::Result<MySettings> {
+    pub async fn get_settings(&mut self) -> anyhow::Result<MySettings> {
         let response = self
             .send_request(RequestData {
                 query_name: QueryHash::settingsPageQuery,
                 ..Default::default()
             })
             .await?;
+
         if let Some(data) = response.get("data").and_then(|d| d.get("viewer")) {
             let settings = serde_json::from_value::<MySettings>(data.clone())?;
             return Ok(settings);
