@@ -36,7 +36,7 @@ impl FileData {
 
 #[derive(Debug, Default)]
 pub struct SendMessageData<'a> {
-    pub bot: &'a str,
+    pub bot_handle: &'a str,
     pub message: &'a str,
     pub chat_id: Option<i64>,
     pub files: Vec<FileInput<'a>>,

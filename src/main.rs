@@ -36,7 +36,7 @@ struct Args {
 
     /// Specify one of the bot names on poe.com.
     #[clap(short = 'b', long, value_name = "BOT_NAME")]
-    bot: String,
+    bot_handle: String,
 
     /// Names of the media files to upload.
     #[clap(short, long, value_name = "FILE")]
@@ -68,7 +68,7 @@ async fn main() -> anyhow::Result<()> {
 
         let mut message = api
             .send_message(SendMessageData {
-                bot: &opt.bot,
+                bot_handle: &opt.bot_handle,
                 message: &opt.query,
                 chat_id: opt.chat_id,
                 files: opt

@@ -365,14 +365,14 @@ impl PoeApi {
     pub async fn set_chat_context_optimization(
         &mut self,
         chat_id: i64,
-        value: bool,
+        enabled: bool,
     ) -> anyhow::Result<bool> {
         let response = self
             .send_request(RequestData {
                 query_name: QueryHash::ChatSettingsModal_ChatSetContextOptimization_Mutation,
                 data: json!({
                     "chatId": chat_id,
-                    "isContextOptimizationOn": value
+                    "isContextOptimizationOn": enabled
                 }),
                 ..Default::default()
             })
@@ -439,7 +439,14 @@ impl PoeApi {
         &mut self,
         payload: SendMessageData<'_>,
     ) -> anyhow::Result<MessageContext> {
-        if let Some(bot_info) = self.get_bot_info(payload.bot).await? {
+        let bot = if payload.bot_handle.is_empty() {
+            let my_settings = self.settings().await?;
+            my_settings.default_bot.display_name
+        } else {
+            payload.bot_handle.to_string()
+        };
+
+        if let Some(bot_info) = self.get_bot_info(&bot).await? {
             let files = generate_file(&payload.files).await?;
             let total_size = files.iter().map(|f| f.data.len()).sum::<usize>();
             if total_size > 350000000 {
@@ -453,13 +460,6 @@ impl PoeApi {
                 RequestPath::GqlPost
             } else {
                 RequestPath::GqlUploadPost
-            };
-
-            let bot = if payload.bot.is_empty() {
-                let my_settings = self.settings().await?;
-                my_settings.default_bot.display_name
-            } else {
-                payload.bot.to_string()
             };
 
             self.connect_websocket().await?;
@@ -500,7 +500,7 @@ impl PoeApi {
             if response.get("data").is_none() && response.get("errors").is_some() {
                 anyhow::bail!(
                     "Bot {} not found. Make sure the bot exists before creating new chat.",
-                    payload.bot
+                    bot
                 )
             }
             if let Some(data) = response
@@ -530,7 +530,7 @@ impl PoeApi {
 
         anyhow::bail!(
             "Failed to get bot info for {}. Make sure the bot exists before creating new chat.",
-            payload.bot
+            bot
         )
     }
 
