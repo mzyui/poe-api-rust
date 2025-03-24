@@ -7,7 +7,7 @@
 ## Table of Contents
 
 - [Overview](#overview)
-- How to get your token
+- [How to get your token](#how-to-get-your-token)
   - [Getting `p-b` and `p-lat` cookies (required)](#step-1-retrieve-p-b-and-p-lat-cookies-required)
   - [Getting fromkey (optional)](#step-2-retrieve-fromkey-optional)
 - [**Installation**](#installation)
@@ -226,6 +226,14 @@ let mut message = message.retry().await?;
 
 ### Cancel Message
 Cancels a message that is in the process of being sent, useful to prevent duplicates or errors.
+
+<details>
+<summary><b>Parameters</b></summary>
+
+| Field Name  | Data Type | Description |
+| --- | --- | --- |
+| `chat_id` | `i64` | Unique identifier for the chat |
+</details>
 
 <details>
 <summary><b>Example</b></summary>
@@ -574,8 +582,6 @@ Enables or disables context optimization for a chat session, which can improve r
 | --- | --- | --- |
 | `chat_id` | `i64` | Unique identifier for the chat |
 | `enabled` | `bool` | Flag to enable (`true`) or disable (`false`) optimization |
-
-
 </details>
 
 <details>
@@ -600,8 +606,6 @@ Updates the title of an existing chat conversation.
 | --- | --- | --- |
 | `chat_id` | `i64` | Unique identifier for the chat |
 | `new_title` | `&str` | New title for the chat |
-
-
 </details>
 
 <details>
