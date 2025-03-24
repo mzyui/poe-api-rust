@@ -538,6 +538,7 @@ Sets the default limit on message points per conversation. This function helps e
 let limit: usize = 420;
 api.set_default_message_point_limit(limit).await?;
 ```
+</details>
 
 ---
 
