@@ -563,3 +563,53 @@ api.set_default_bot(bot_id).await?;
 
 ---
 
+### Set Chat Context Optimization 
+Enables or disables context optimization for a chat session, which can improve relevance and performance.
+
+<details>
+<summary><b>Parameters</b></summary>
+
+| Field Name  | Data Type | Description |
+| --- | --- | --- |
+| `chat_id` | `i64` | Unique identifier for the chat |
+| `enabled` | `bool` | Flag to enable (`true`) or disable (`false`) optimization |
+
+
+</details>
+
+<details>
+<summary><b>Example</b></summary>
+
+```rust
+let chat_id: i64 = 420;
+let enabled: bool = false;
+api.set_chat_context_optimization(chat_id, enabled).await?;
+```
+</details>
+
+---
+
+### Set Chat Title 
+Updates the title of an existing chat conversation.
+
+<details>
+<summary><b>Parameters</b></summary>
+
+| Field Name  | Data Type | Description |
+| --- | --- | --- |
+| `chat_id` | `i64` | Unique identifier for the chat |
+| `new_title` | `&str` | New title for the chat |
+
+
+</details>
+
+<details>
+<summary><b>Example</b></summary>
+
+```rust
+let chat_id: i64 = 420;
+let new_title: &str = "ayonima";
+api.set_new_title(chat_id, new_title).await?;
+```
+</details>
+
