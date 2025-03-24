@@ -91,7 +91,7 @@ To manage dependencies and build your project, use Cargo. You can integrate the 
 
 ```toml
 [dependencies]
-poe_api = { git = "https://github.com/zevtyardt/poe-api-rust", default-features = false }
+poe-api = { git = "https://github.com/zevtyardt/poe-api-rust", default-features = false }
 ```
 
 ### Command-Line Interface
