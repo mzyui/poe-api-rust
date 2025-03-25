@@ -381,7 +381,7 @@ message.list_preview_app().await?;
 
 ### Explore 🔎
 
-Discover available users, bots, and AI models. Use this function to retrieve a list of valid categories.
+Discover available users, bots, and AI models.
 
 <details>
 <summary><b>Parameters</b></summary>
