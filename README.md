@@ -1,12 +1,10 @@
-Below is the enhanced version of your documentation in English with some added emojis and improved styling. Enjoy!
 
----
+<div align="center">
 
 # Poe API Rust 🚀
 
 _A simple, lightweight, and efficient API wrapper for Poe.com_
 
-<div align="center">
   <img src="https://psc2.cf2.poecdn.net/favicon.svg" height="35" alt="Poe API Rust">
 </div>
 
