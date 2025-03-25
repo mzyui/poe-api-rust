@@ -3,8 +3,6 @@
   <em>A simple, lightweight, and efficient API wrapper for Poe.com</em>
 </div>
 
----
-
 ## Table of Contents 📚
 
 - [Overview](#overview)
