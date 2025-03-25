@@ -1,15 +1,23 @@
-<div align="center">
-<h1>Poe API Rust <img src="https://psc2.cf2.poecdn.net/favicon.svg" height="35"></h1>
+Below is the enhanced version of your documentation in English with some added emojis and improved styling. Enjoy!
 
-<p><em>A simple, lightweight and efficient API wrapper for Poe.com</em></p>
+---
+
+# Poe API Rust 🚀
+
+_A simple, lightweight, and efficient API wrapper for Poe.com_
+
+<div align="center">
+  <img src="https://psc2.cf2.poecdn.net/favicon.svg" height="35" alt="Poe API Rust">
 </div>
-  
-## Table of Contents
+
+---
+
+## Table of Contents 📚
 
 - [Overview](#overview)
-- [How to get your token](#how-to-get-your-token)
-  - [Getting `p-b` and `p-lat` cookies (required)](#step-1-retrieve-p-b-and-p-lat-cookies-required)
-  - [Getting fromkey (optional)](#step-2-retrieve-fromkey-optional)
+- [How to Get Your Token](#how-to-get-your-token)
+  - [Step 1: Retrieve `p-b` and `p-lat` Cookies (Required)](#step-1-retrieve-p-b-and-p-lat-cookies-required)
+  - [Step 2: Retrieve `formkey` (Optional)](#step-2-retrieve-formkey-optional)
 - [Installation](#installation)
 - [Connecting to the API](#connecting-to-the-api)
 - [Documentation](#documentation)
@@ -39,72 +47,85 @@
     - [Import Chat](#import-chat)
     - [Chat History](#chat-history)
     - [Clear Chat Context](#clear-chat-context)
-  - **Misc**
+  - **Miscellaneous**
     - [Get Settings](#get-settings)
 - [License](#license)
 
 ---
 
-## Overview
+## Overview ✨
 
-**Poe API Rust** is an advanced API crafted for managing chat and messaging functionalities on Poe.com. Leveraging Rust's capabilities, this project emphasizes safety, speed, and efficient concurrency. The API enables users to:
+**Poe API Rust** is a high-performance API designed to manage chat and messaging functionalities on Poe.com. Leveraging the safety and concurrency benefits of Rust, this API wrapper enables you to:
 
-- Discover available users, bots and AI models.
-- Customize settings for chat conversations.
+- Explore available users, bots, and AI models.
+- Customize chat conversation settings.
 - Send, retry, and cancel messages seamlessly.
-- Access detailed information about bots and users.
-- Fine-tune and optimize chat contexts for enhanced interactions.
+- Retrieve detailed data about bots and users.
+- Optimize chat contexts for enhanced interactions.
 
-This documentation offers a comprehensive guide to each function available within the API.
+This documentation provides a comprehensive guide to all the available functions within the API.
 
-### How to Get Your Token
+---
 
-#### Step 1: Retrieve `p-b` and `p-lat` Cookies (Required)
-1. Sign in at [poe.com](https://poe.com/).
-2. Open Developer Tools:
-   - **Chromium**: Press `F12` or right-click and select **Inspect**, then navigate to **Application** > **Cookies** > **poe.com**.
-   - **Firefox**: Press `F12` or right-click and select **Inspect**, then go to **Storage** > **Cookies**.
-   - **Safari**: Press `F12` or right-click and select **Inspect**, then access **Storage** > **Cookies**.
-3. Copy the values of the `p-b` and `p-lat` cookies.
+## How to Get Your Token 🔑
 
-#### Step 2: Retrieve `formkey` (Optional)
-> [!NOTE]
-> The **poe-api-rust** automatically retrieves the `formkey` for you. If it fails, follow the steps below to obtain the token manually.
+### Step 1: Retrieve `p-b` and `p-lat` Cookies (Required)
+
+1. **Sign in** at [poe.com](https://poe.com/).
+2. **Open Developer Tools:**
+   - **Chromium:** Press `F12` or right-click and select **Inspect**, then navigate to **Application** > **Cookies** > **poe.com**.
+   - **Firefox:** Press `F12` or right-click and select **Inspect**, then go to **Storage** > **Cookies**.
+   - **Safari:** Press `F12` or right-click and select **Inspect**, then access **Storage** > **Cookies**.
+3. **Copy** the values of the `p-b` and `p-lat` cookies.
+
+### Step 2: Retrieve `formkey` (Optional)
+
+> **Note:** The **poe-api-rust** automatically retrieves the `formkey` for you. If this fails, follow the steps below to obtain the token manually.
 
 There are two methods to get the `formkey`:
 
-1. **Method 1: Using Network Tab**
+1. **Method 1: Using the Network Tab**
    - Open Developer Tools (`F12` or right-click and select **Inspect**).
    - Navigate to **Network** > **gql_POST** > **Headers**.
-   - Copy the value of `Poe-Formkey`.
+   - Copy the value of **Poe-Formkey**.
 
-2. **Method 2: Using Console**
+2. **Method 2: Using the Console**
    - Open Developer Tools (`F12` or right-click and select **Inspect**).
    - Go to the **Console** tab.
    - Type: `allow pasting` and press Enter.
-   - Paste the following script: `window.ereNdsRqhp2Rd3LEW()`.
+   - Paste the following script:
+     ```js
+     window.ereNdsRqhp2Rd3LEW()
+     ```
    - Copy the resulting output.
 
-## Installation
+---
 
-To manage dependencies and build your project, use Cargo. You can integrate the API functions by adding the module file to your Cargo project structure. Here’s a basic setup:
+## Installation 💾
+
+Use Cargo to manage your dependencies and build your project. To integrate the API, add the following dependency to your `Cargo.toml`:
 
 ```toml
 [dependencies]
 poe-api = { git = "https://github.com/zevtyardt/poe-api-rust", default-features = false }
 ```
 
-##### Command-Line Interface
+### Command-Line Interface (CLI)
 
-This library also offers a command-line interface. To install it directly, run:
+This library also offers a CLI. Install it using:
 
 ```bash
 cargo install --git "https://github.com/zevtyardt/poe-api-rust"
 ```
 
-You can then execute the CLI using the `poe-cli` command.
+Then, execute CLI commands using the `poe-cli` command.
 
-## Connecting to the API
+---
+
+## Connecting to the API 🔗
+
+Below is a simple example of how to initialize a connection:
+
 ```rust
 use poe_api::{api::PoeApi, models::Token};
 
@@ -115,10 +136,13 @@ let api = PoeApi::new(Token {
 }).await?;
 ```
 
-## Documentation (Work in progress)
+---
 
-### Send Message
-Sends a new message to a specified AI model or bot name. Supports both text and media messages.
+## Documentation 📖
+
+### Send Message ✉️
+
+Send a new message to a specified AI model or bot name. Both text and media messages are supported.
 
 <details>
 <summary><b>Parameters</b></summary>
@@ -145,32 +169,33 @@ pub enum FileInput<'a> {
 use poe_api::models::{SendMessageData, FileInput};
 use futures_util::StreamExt;
 
-// Ask simple questions using `gemini-2.0-flash` model
+// Ask a simple question using the "gemini-2.0-flash" model.
 let mut message = api.send_message(SendMessageData {
     bot_handle: "gemini-2.0-flash",
-    message: "what is the result of 2x2?",
+    message: "What is the result of 2x2?",
     ..Default::default()
 }).await?;
 
-// Streamed output
+// Handle streamed output.
 while let Some(chunk) = message.next().await {
-    // Process chunk output or pretty print on terminal directly
+    // Process the chunk or print it directly.
     chunk.print()?;
 }
 
-// Non-streamed output
+// For non-streamed output:
 let text = message.text().await;
 ```
-**Another Example:** where these anime characters came from?
 
-![Tainaka Ritsu](https://github.com/user-attachments/assets/28a2f066-9612-4f78-ba0a-3cb6b779c7b8)
+**Another Example:**
+
+Sending a message in an existing chat thread including an image referenced locally:
 
 ```rust
-// Send message to an existing chat thread
+// Retrieve chat_id from an existing message.
 let chat_id = message.chat().inner.chat_id;
 let message_data = SendMessageData {
-    bot: "gemini-2.0-flash",
-    message: "who is she??",
+    bot_handle: "gemini-2.0-flash",
+    message: "Who is she?",
     chat_id: Some(chat_id),
     files: vec![
         FileInput::Local("my-wife.png")
@@ -178,12 +203,14 @@ let message_data = SendMessageData {
 };
 
 let mut message = api.send_message(message_data).await?;
-// or 
+// Alternatively:
 let mut message = message.chat().send_message(message_data).await?;
 
 println!("{}", message.text().await);
 ```
-**Output:**
+
+**Expected Output:**
+
 ```markdown
 The anime character in the image is Ritsu Tainaka from the anime series K-On!. She is the self-proclaimed president of the Light Music Club and the drummer of the band Ho-kago Tea Time.
 
@@ -193,19 +220,19 @@ Related searches:
 + [anime characters in image](https://www.google.com/search?q=anime+characters+in+image&client=app-vertex-grounding-quora-poe)
 + [anime with characters Ritsu Tainaka](https://www.google.com/search?q=anime+with+characters+Ritsu+Tainaka&client=app-vertex-grounding-quora-poe)
 ```
-</details>
 
 ---
 
-### Retry Message
-Attempt to send or recreate a message that was previously undeliverable or inappropriate.
+### Retry Message 🔄
+
+Reattempt sending or recreating a message that was previously undelivered or inappropriate.
 
 <details>
 <summary><b>Parameters</b></summary>
 
-| Field Name  | Data Type | Description |
-| --- | --- | --- |
-| `chat_code` | `&str` | Chat Identifier |
+| Field Name  | Data Type | Description     |
+|-------------|-----------|-----------------|
+| `chat_code` | `&str`    | Chat identifier |
 </details>
 
 <details>
@@ -215,23 +242,24 @@ Attempt to send or recreate a message that was previously undeliverable or inapp
 let chat_code: &str = "sample";
 let mut message = api.retry_message(chat_code).await?;
 
-let mut message = message.retry().await?;
+message = message.retry().await?;
 
-// Same as #send-message
+// Functionality similar to send_message.
 ```
 </details>
 
 ---
 
-### Cancel Message
-Cancels a message that is in the process of being sent, useful to prevent duplicates or errors.
+### Cancel Message ❌
+
+Cancel a message that is in the process of being sent to avoid duplicates or errors.
 
 <details>
 <summary><b>Parameters</b></summary>
 
-| Field Name  | Data Type | Description |
-| --- | --- | --- |
-| `chat_id`   | `i64`     | Chat identifier. |
+| Field Name | Data Type | Description     |
+|------------|-----------|-----------------|
+| `chat_id`  | `i64`     | Chat identifier |
 </details>
 
 <details>
@@ -241,22 +269,24 @@ Cancels a message that is in the process of being sent, useful to prevent duplic
 let chat_id: i64 = 12345;
 api.cancel_message(chat_id).await?;
 
+// Alternately, cancel via the message instance.
 message.cancel().await?;
 ```
 </details>
 
 ---
 
-### Delete Messages
-Deletes one or more messages from a chat based on provided message IDs.
+### Delete Messages 🗑️
+
+Delete one or more messages from a chat by specifying their message IDs.
 
 <details>
 <summary><b>Parameters</b></summary>
 
-| Field Name  | Data Type | Description |
-| --- | --- | --- |
-| `chat_id`   | `i64`     | Chat identifier. |
-| `message_ids` | `Vec<i64>`| A vector of message IDs. |
+| Field Name   | Data Type   | Description                               |
+|--------------|-------------|-------------------------------------------|
+| `chat_id`    | `i64`       | Chat identifier                           |
+| `message_ids`| `Vec<i64>`  | Vector containing message IDs             |
 </details>
 
 <details>
@@ -267,27 +297,27 @@ let chat_id: i64 = 12345;
 let message_ids: Vec<i64> = vec![678910, 11121314];
 api.delete_message(chat_id, message_ids).await?;
 
-// delete user message
+// Delete specific message types:
 message.delete_user_message().await?;
-// delete bot message
 message.delete_bot_message().await?;
-// or both messages
+// Or clear both contexts:
 message.delete_message_context().await?;
 ```
 </details>
 
 ---
 
-### Get Message Share URL 
-Generates a shareable URL for a specific message, allowing it to be shared externally.
+### Get Message Share URL 🔗
+
+Generate a shareable URL for a specific message, making it easy to share externally.
 
 <details>
 <summary><b>Parameters</b></summary>
 
-| Field Name  | Data Type | Description |
-| --- | --- | --- |
-| `chat_id`   | `i64`     | Chat identifier. |
-| `message_ids` | `Vec<i64>`| A vector of message IDs. |
+| Field Name   | Data Type   | Description              |
+|--------------|-------------|--------------------------|
+| `chat_id`    | `i64`       | Chat identifier          |
+| `message_ids`| `Vec<i64>`  | Vector containing IDs    |
 </details>
 
 <details>
@@ -298,22 +328,23 @@ let chat_id: i64 = 12345;
 let message_ids: Vec<i64> = vec![678910, 11121314];
 api.get_message_share_url(chat_id, message_ids).await?;
 
-// delete user message
+// Alternatively, via the message instance:
 message.share().await?;
 ```
 </details>
 
 ---
 
-### Get Total Cost Points 
-Calculates the total cost (in points) for a specific message, which can be used for metering or billing purposes.
+### Get Total Cost Points 💰
+
+Calculate the total cost (in message points) for a specific message. Useful for metering or billing.
 
 <details>
 <summary><b>Parameters</b></summary>
 
-| Field Name  | Data Type | Description |
-| --- | --- | --- |
-| `message_code`   | `&str`     | Message identifier. |
+| Field Name     | Data Type | Description          |
+|----------------|-----------|----------------------|
+| `message_code` | `&str`    | Message identifier   |
 </details>
 
 <details>
@@ -323,24 +354,23 @@ Calculates the total cost (in points) for a specific message, which can be used 
 let message_code: &str = "abcdef";
 api.get_total_cost_points(message_code).await?;
 
-// or
+// Or via the message instance:
 message.total_cost_points().await?;
 ```
 </details>
 
 ---
 
-### Get List Preview Apps
-Generates a shareable URL for a preview apps, allowing it to be shared externally.
+### Get List Preview Apps 📱
 
-The "Previews" feature on poe.com allows users to generate and interact with web applications directly, making it possible to create things like games, animations, and data visualizations using AI coding models.
+Generate a shareable URL for preview apps. Poe.com's "Previews" feature allows you to interact with web applications, such as games, animations, or data visualizations using AI coding models.
 
 <details>
 <summary><b>Parameters</b></summary>
 
-| Field Name  | Data Type | Description |
-| --- | --- | --- |
-| `message_id`   | `i64`     | Message identifier. |
+| Field Name   | Data Type | Description            |
+|--------------|-----------|------------------------|
+| `message_id` | `i64`     | Message identifier     |
 </details>
 
 <details>
@@ -348,17 +378,18 @@ The "Previews" feature on poe.com allows users to generate and interact with web
 
 ```rust
 let message_id: i64 = 12345;
-api.get_list_preview_app(message_code).await?;
+api.get_list_preview_app(message_id).await?;
 
-// or
+// Or via the message instance:
 message.list_preview_app().await?;
 ```
 </details>
 
 ---
 
-### Explore
-Discover available users, bots and AI models. To get a list of valid categories. see the [Get Available Categories](#get-available-categories) section.
+### Explore 🔎
+
+Discover available users, bots, and AI models. Use this function to retrieve a list of valid categories.
 
 <details>
 <summary><b>Parameters</b></summary>
@@ -390,26 +421,27 @@ let search_data = SearchData {
     entity_type: EntityType::Bot,
     ..Default::default()
 };
+
 let mut result = api.explore(search_data).await?;
 
 while let Some(entity) = result.next().await {
     match entity {
-        Entity::User(_user) => {
-            // process user
+        Entity::User(user_info) => {
+            // Process user data.
         }
-        Entity::Bot(_bot) => {
-            // process bot
+        Entity::Bot(bot_info) => {
+            // Process bot data.
         }
     }
 }
 ```
-
 </details>
 
 ---
 
-### Get Available Categories 
-Fetches all available AI model categories, enabling users to quickly find the type of content they are interested in.
+### Get Available Categories 📑
+
+Retrieve a list of all available AI model categories so that you can quickly find your interest.
 
 <details>
 <summary><b>Example</b></summary>
@@ -418,7 +450,9 @@ Fetches all available AI model categories, enabling users to quickly find the ty
 let categories = api.get_available_categories().await?;
 println!("{:?}", categories);
 ```
-**Output:**
+
+**Expected Output:**
+
 ```markdown
 ["Official", "Reasoning", "Apps", "Search", "Image generation", "Audio and video", "For you", "Popular", "Funny", "Roleplay", "AI", "Utilities", "Programming", "Hobbies", "Learning", "Game Apps", "Featured", "Professional", "Creative writing", "Game Bots", "Advice", "Mind", "Translation", "Text analysis", "New"]
 ```
@@ -426,15 +460,16 @@ println!("{:?}", categories);
 
 ---
 
-### Get Bot Info
-Retrieves detailed information about a bot, including its configuration, current status, and capabilities.
+### Get Bot Info 🤖
+
+Retrieve detailed information about a specific bot, including configuration, status, and capabilities.
 
 <details>
 <summary><b>Parameters</b></summary>
 
-| Field Name  | Data Type | Description |
-| --- | --- | --- |
-| `bot_handle`   | `&str`     | Bot handle name |
+| Field Name  | Data Type | Description         |
+|-------------|-----------|---------------------|
+| `bot_handle`| `&str`    | Bot handle name     |
 </details>
 
 <details>
@@ -445,23 +480,39 @@ let bot_handle: &str = "Claude-3.7-Sonnet-Reasoning";
 let bot_info = api.get_bot_info(bot_handle).await?;
 println!("{:?}", bot_info);
 ```
-**Output:**
+
+**Expected Output:**
+
 ```markdown
-Some(BotInfo { id: "Qm90OjEwMjY=", bot_id: 1026, handle: "Claude-3.7-Sonnet-Reasoning", display_name: "Claude-3.7-Sonnet-Reasoning", model: Some("flannel_reasoning"), picture_url: Some("https://qph.cf2.poecdn.net/main-thumb-pb-1026-200-fvvsiofehkfrtswcutfmahqytzyfadsp.jpeg"), description: "Anthropic's most intelligent model (with reasoning capabilities on by default). Claude 3.7 Sonnet is a hybrid reasoning model, producing near-instant responses or extended, step-by-step thinking. Recommended for complex math or coding problems. Supports a 200k token context window.", powered_by: Some("Powered by Anthropic."), tags: ["OFFICIAL"], display_message_point_price: 123, introduction: Some(""), is_created_by_poe_user_account: false })
+Some(BotInfo {
+    id: "Qm90OjEwMjY=",
+    bot_id: 1026,
+    handle: "Claude-3.7-Sonnet-Reasoning",
+    display_name: "Claude-3.7-Sonnet-Reasoning",
+    model: Some("flannel_reasoning"),
+    picture_url: Some("https://qph.cf2.poecdn.net/main-thumb-pb-1026-200-fvvsiofehkfrtswcutfmahqytzyfadsp.jpeg"),
+    description: "Anthropic's most intelligent model (with reasoning capabilities on by default). Claude 3.7 Sonnet is a hybrid reasoning model, producing near-instant responses or extended, step-by-step thinking. Recommended for complex math or coding problems. Supports a 200k token context window.",
+    powered_by: Some("Powered by Anthropic."),
+    tags: ["OFFICIAL"],
+    display_message_point_price: 123,
+    introduction: Some(""),
+    is_created_by_poe_user_account: false
+})
 ```
 </details>
 
 ---
 
-### Get User Info
-Fetches profile details for a specific user.
+### Get User Info 👤
+
+Fetch profile details for a specific user.
 
 <details>
 <summary><b>Parameters</b></summary>
 
-| Field Name  | Data Type | Description |
-| --- | --- | --- |
-| `user_handle`   | `&str`     | User handle name |
+| Field Name   | Data Type | Description       |
+|--------------|-----------|-------------------|
+| `user_handle`| `&str`    | User handle name  |
 </details>
 
 <details>
@@ -469,26 +520,37 @@ Fetches profile details for a specific user.
 
 ```rust
 let user_handle: &str = "openai";
-let user_info = api.get_user_info(bot_handle).await?;
+let user_info = api.get_user_info(user_handle).await?;
 println!("{:?}", user_info);
 ```
-**Output:**
+
+**Expected Output:**
+
 ```markdown
-Some(UserInfo { id: "UG9lVXNlcjoyOTEwNDAwODc5", uid: 2910400879, handle: "openai", full_name: "OpenAI", follower_count: 2470, medium_profile_photo_url: Some("https://qph.cf2.poecdn.net/main-thumb-2910400879-100-wrfgcbmfjrhquvwlxvypitmawpovrxoi.jpeg"), profile_photo_url: Some("https://qph.cf2.poecdn.net/main-thumb-2910400879-200-wrfgcbmfjrhquvwlxvypitmawpovrxoi.jpeg") })
+Some(UserInfo {
+    id: "UG9lVXNlcjoyOTEwNDAwODc5",
+    uid: 2910400879,
+    handle: "openai",
+    full_name: "OpenAI",
+    follower_count: 2470,
+    medium_profile_photo_url: Some("https://qph.cf2.poecdn.net/main-thumb-2910400879-100-wrfgcbmfjrhquvwlxvypitmawpovrxoi.jpeg"),
+    profile_photo_url: Some("https://qph.cf2.poecdn.net/main-thumb-2910400879-200-wrfgcbmfjrhquvwlxvypitmawpovrxoi.jpeg")
+})
 ```
 </details>
 
 ---
 
-### Follow User
-Adds the specified user to your follow list. This is useful for tracking updates and activities.
+### Follow User ➕
+
+Add the specified user to your follow list to track updates and activities.
 
 <details>
 <summary><b>Parameters</b></summary>
 
-| Field Name  | Data Type | Description |
-| --- | --- | --- |
-| `user_id`   | `i64`     | User identifier |
+| Field Name  | Data Type | Description       |
+|-------------|-----------|-------------------|
+| `user_id`   | `i64`     | User identifier   |
 </details>
 
 <details>
@@ -502,15 +564,16 @@ api.follow_user(user_id).await?;
 
 ---
 
-### Unfollow User
-Removes the specified user from your follow list.
+### Unfollow User ➖
+
+Remove the specified user from your follow list.
 
 <details>
 <summary><b>Parameters</b></summary>
 
-| Field Name  | Data Type | Description |
-| --- | --- | --- |
-| `user_id`   | `i64`     | User identifier |
+| Field Name  | Data Type | Description       |
+|-------------|-----------|-------------------|
+| `user_id`   | `i64`     | User identifier   |
 </details>
 
 <details>
@@ -524,15 +587,16 @@ api.unfollow_user(user_id).await?;
 
 ---
 
-### Set Default Message Point Limit 
-Sets the default limit on message points per conversation. This function helps enforce usage policies or manage message size constraints.
+### Set Default Message Point Limit 🔢
+
+Set the default threshold for message points per conversation. Useful for enforcing usage policies or managing message sizes.
 
 <details>
 <summary><b>Parameters</b></summary>
 
-| Field Name  | Data Type | Description |
-| --- | --- | --- |
-| `limit`   | `usize`     | Maximum threshold points per conversation |
+| Field Name | Data Type | Description                                           |
+|------------|-----------|-------------------------------------------------------|
+| `limit`    | `usize`   | Maximum number of message points allowed per chat     |
 </details>
 
 <details>
@@ -546,15 +610,16 @@ api.set_default_message_point_limit(limit).await?;
 
 ---
 
-### Set Default Bot
-Assigns a default bot to the chat system for cases where no specific bot is selected.
+### Set Default Bot 🛠️
+
+Assign a default bot to the chat system when no specific bot is chosen.
 
 <details>
 <summary><b>Parameters</b></summary>
 
-| Field Name  | Data Type | Description |
-| --- | --- | --- |
-| `bot_id`   | `i64`     | Bot identifier |
+| Field Name | Data Type | Description         |
+|------------|-----------|---------------------|
+| `bot_id`   | `i64`     | Bot identifier      |
 </details>
 
 <details>
@@ -568,16 +633,17 @@ api.set_default_bot(bot_id).await?;
 
 ---
 
-### Set Chat Context Optimization 
-Enables or disables context optimization for a chat session, which can improve relevance and performance.
+### Set Chat Context Optimization ⚙️
+
+Toggle context optimization for a chat session to improve relevance and performance.
 
 <details>
 <summary><b>Parameters</b></summary>
 
-| Field Name  | Data Type | Description |
-| --- | --- | --- |
-| `chat_id` | `i64` | Chat identifier |
-| `enabled` | `bool` | Flag to enable (`true`) or disable (`false`) optimization |
+| Field Name | Data Type | Description                                                   |
+|------------|-----------|---------------------------------------------------------------|
+| `chat_id`  | `i64`     | Chat identifier                                               |
+| `enabled`  | `bool`    | Set `true` to enable or `false` to disable optimization       |
 </details>
 
 <details>
@@ -588,23 +654,24 @@ let chat_id: i64 = 420;
 let enabled: bool = false;
 api.set_chat_context_optimization(chat_id, enabled).await?;
 
-// or
+// Alternatively, via the message's chat instance:
 message.chat().set_context_optimization(enabled).await?;
 ```
 </details>
 
 ---
 
-### Set Chat Title 
-Updates the title of an existing chat conversation.
+### Set Chat Title 🏷️
+
+Update the title of an existing chat conversation.
 
 <details>
 <summary><b>Parameters</b></summary>
 
-| Field Name  | Data Type | Description |
-| --- | --- | --- |
-| `chat_id` | `i64` | Chat identifier |
-| `new_title` | `&str` | New title for the chat |
+| Field Name  | Data Type | Description            |
+|-------------|-----------|------------------------|
+| `chat_id`   | `i64`    | Chat identifier         |
+| `new_title` | `&str`   | New title for the chat  |
 </details>
 
 <details>
@@ -615,15 +682,16 @@ let chat_id: i64 = 420;
 let new_title: &str = "ayonima";
 api.set_new_title(chat_id, new_title).await?;
 
-// or 
+// Or via the message’s chat instance:
 message.chat().set_title(new_title).await?;
 ```
 </details>
 
 ---
 
-### Purge All Conversations 
-Removes all chat conversations from the system, effectively resetting the chat history.
+### Purge All Conversations 🧹
+
+Remove all chat conversations from the system to reset the chat history.
 
 <details>
 <summary><b>Example</b></summary>
@@ -635,15 +703,16 @@ api.purge_all_conversations().await?;
 
 ---
 
-### Delete Chat 
-Deletes a specific chat session identified by its unique ID.
+### Delete Chat 🗑️
+
+Delete a specific chat session using its unique identifier.
 
 <details>
 <summary><b>Parameters</b></summary>
 
-| Field Name  | Data Type | Description |
-| --- | --- | --- |
-| `chat_id`   | `i64`     | Chat identifier. |
+| Field Name | Data Type | Description         |
+|------------|-----------|---------------------|
+| `chat_id`  | `i64`     | Chat identifier     |
 </details>
 
 <details>
@@ -651,24 +720,25 @@ Deletes a specific chat session identified by its unique ID.
 
 ```rust
 let chat_id: i64 = 420;
-api.purge_all_conversations(chat_id).await?;
+api.delete_chat(chat_id).await?;
 
-// or 
+// Or via the message's chat instance:
 message.chat().delete().await?;
 ```
 </details>
 
 ---
 
-### Import Chat 
-Imports chat data from an external source. This can be useful for migrating or restoring conversations.
+### Import Chat 📥
+
+Import chat data from an external source, useful for migrating or restoring conversations.
 
 <details>
 <summary><b>Parameters</b></summary>
 
-| Field Name  | Data Type | Description |
-| --- | --- | --- |
-| `chat_code` | `&str` | Chat Identifier |
+| Field Name  | Data Type | Description         |
+|-------------|-----------|---------------------|
+| `chat_code` | `&str`   | Chat identifier      |
 </details>
 
 <details>
@@ -681,8 +751,10 @@ api.import_chat(chat_code).await?;
 </details>
 
 ---
-### Chat History 
-Retrieves the history of chat conversation.
+
+### Chat History 📜
+
+Retrieve the complete history of chat conversations.
 
 <details>
 <summary><b>Example</b></summary>
@@ -696,15 +768,16 @@ while let Some(chat) = api.chat_history() {
 
 ---
 
-### Clear Chat Context 
-Resets the context of a specific chat conversation by clearing any stored temporary data. This can help restart a conversation without any residual context.
+### Clear Chat Context 🔄
+
+Reset the context of a specific chat conversation by clearing any stored temporary data. This is useful for restarting a conversation without any residual context.
 
 <details>
 <summary><b>Parameters</b></summary>
 
-| Field Name  | Data Type | Description |
-| --- | --- | --- |
-| `chat_id` | `i64` | Chat Identifier |
+| Field Name | Data Type | Description         |
+|------------|-----------|---------------------|
+| `chat_id`  | `i64`     | Chat identifier     |
 </details>
 
 <details>
@@ -714,33 +787,58 @@ Resets the context of a specific chat conversation by clearing any stored tempor
 let chat_id: i64 = 123456;
 api.clear_chat_context(chat_id).await?;
 
-// or 
+// Or via the message's chat instance:
 message.chat().clear_context().await?;
 ```
 </details>
 
 ---
 
-### Get Settings 
-Get remaining points and additional info.
+### Get Settings ⚙️
+
+Retrieve your settings including remaining points and additional configuration details.
 
 <details>
 <summary><b>Example</b></summary>
 
-```rust 
+```rust
 let my_setting = api.get_settings().await?;
 println!("{:?}", my_setting);
 ```
-**Output:**
-```markdown
 
-MySettings { uid: 659168979, default_bot: DefaultBot { display_name: "Assistant", bot_id: 3002, id: "Qm90OjMwMDI=" }, message_point_info: MessagePointInfo { message_point_reset_time: +57199-01-26T05:30:00Z, message_point_balance: 1827, total_message_point_allotment: 3000, all_chat_default_point_price_threshold_per_message: 500 }, primary_phone_number: None, primary_email: Some("[REDACTED]"), confirmed_emails: ["[REDACTED]"], has_active_subscription: false, enable_gtm_event_sending: true, viewer_country_code: "ID", global_context_optimization_status: true, enable_global_context_optimization: true, has_unread_message: false }
+**Expected Output:**
+
+```markdown
+MySettings {
+    uid: 659168979,
+    default_bot: DefaultBot {
+        display_name: "Assistant",
+        bot_id: 3002,
+        id: "Qm90OjMwMDI="
+    },
+    message_point_info: MessagePointInfo {
+        message_point_reset_time: +57199-01-26T05:30:00Z,
+        message_point_balance: 1827,
+        total_message_point_allotment: 3000,
+        all_chat_default_point_price_threshold_per_message: 500
+    },
+    primary_phone_number: None,
+    primary_email: Some("[REDACTED]"),
+    confirmed_emails: ["[REDACTED]"],
+    has_active_subscription: false,
+    enable_gtm_event_sending: true,
+    viewer_country_code: "ID",
+    global_context_optimization_status: true,
+    enable_global_context_optimization: true,
+    has_unread_message: false
+}
 ```
 </details>
 
 ---
 
-## LICENSE 
+## License 📄
+
 ```text
 MIT License
 
