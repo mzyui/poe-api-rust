@@ -1,11 +1,6 @@
-
 <div align="center">
-
-# Poe API Rust 🚀
-
-_A simple, lightweight, and efficient API wrapper for Poe.com_
-
-  <img src="https://psc2.cf2.poecdn.net/favicon.svg" height="35" alt="Poe API Rust">
+  <h1>Poe API Rust <img src="https://psc2.cf2.poecdn.net/favicon.svg" height="35"></h1>
+  <em>A simple, lightweight, and efficient API wrapper for Poe.com</em>
 </div>
 
 ---
