@@ -211,6 +211,7 @@ Related searches:
 + [anime characters in image](https://www.google.com/search?q=anime+characters+in+image&client=app-vertex-grounding-quora-poe)
 + [anime with characters Ritsu Tainaka](https://www.google.com/search?q=anime+with+characters+Ritsu+Tainaka&client=app-vertex-grounding-quora-poe)
 ```
+</details>
 
 ---
 
