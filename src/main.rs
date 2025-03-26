@@ -31,7 +31,7 @@ struct Args {
     p_lat: String,
 
     /// Unique code for each poe.com account.
-    #[clap(long, value_name = "FROMKEY")]
+    #[clap(long, value_name = "FROMKEY", env = "POE_FROMKEY", hide_env_values = true)]
     fromkey: Option<String>,
 
     /// Specify one of the bot names on poe.com.
