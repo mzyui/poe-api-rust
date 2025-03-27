@@ -6,40 +6,41 @@
 ## Table of Contents 📚
 
 - [Overview](#overview-)
-- [How to Get Your Token](#how-to-get-your-token-)
-  - [Step 1: Retrieve `p-b` and `p-lat` Cookies (Required)](#step-1-retrieve-p-b-and-p-lat-cookies-required)
-  - [Step 2: Retrieve `formkey` (Optional)](#step-2-retrieve-formkey-optional)
 - [Installation](#installation-)
-- [Connecting to the API](#connecting-to-the-api-)
 - [Documentation](#documentation-)
-  - **Message Handling**
-    - [Send Message](#send-message-)
-    - [Retry Message](#retry-message-)
-    - [Cancel Message](#cancel-message-)
-    - [Delete Messages](#delete-messages-)
-    - [Get Message Share URL](#get-message-share-url-)
-    - [Get Total Cost Points](#get-total-cost-points-)
-    - [Get List Preview Apps](#get-list-preview-apps-)
-  - **User & Bot Management**
-    - [Explore](#explore-)
-    - [Get Available Categories](#get-available-categories-)
-    - [Get Bot Info](#get-bot-info-)
-    - [Get User Info](#get-user-info-)
-    - [Follow User](#follow-user-)
-    - [Unfollow User](#unfollow-user-)
-  - **Chat Setup & Customization**
-    - [Set Default Message Point Limit](#set-default-message-point-limit-)
-    - [Set Default Bot](#set-default-bot-)
-    - [Set Chat Context Optimization](#set-chat-context-optimization-)
-    - [Set Chat Title](#set-chat-title-)
-  - **Conversation Management**
-    - [Purge All Conversations](#purge-all-conversations-)
-    - [Delete Chat](#delete-chat-)
-    - [Import Chat](#import-chat-)
-    - [Chat History](#chat-history-)
-    - [Clear Chat Context](#clear-chat-context-)
-  - **Miscellaneous**
-    - [Get Settings](#get-settings-)
+  - [How to Get Your Token](#how-to-get-your-token-)
+    - [Step 1: Retrieve `p-b` and `p-lat` Cookies (Required)](#step-1-retrieve-p-b-and-p-lat-cookies-required)
+    - [Step 2: Retrieve `formkey` (Optional)](#step-2-retrieve-formkey-optional)
+  - [Connecting to the API](#connecting-to-the-api-)
+  - [Functionality][#functionality]
+    - **Message Handling**
+      - [Send Message](#send-message-)
+      - [Retry Message](#retry-message-)
+      - [Cancel Message](#cancel-message-)
+      - [Delete Messages](#delete-messages-)
+      - [Get Message Share URL](#get-message-share-url-)
+      - [Get Total Cost Points](#get-total-cost-points-)
+      - [Get List Preview Apps](#get-list-preview-apps-)
+    - **User & Bot Management**
+      - [Explore](#explore-)
+      - [Get Available Categories](#get-available-categories-)
+      - [Get Bot Info](#get-bot-info-)
+      - [Get User Info](#get-user-info-)
+      - [Follow User](#follow-user-)
+      - [Unfollow User](#unfollow-user-)
+    - **Chat Setup & Customization**
+      - [Set Default Message Point Limit](#set-default-message-point-limit-)
+      - [Set Default Bot](#set-default-bot-)
+      - [Set Chat Context Optimization](#set-chat-context-optimization-)
+      - [Set Chat Title](#set-chat-title-)
+    - **Conversation Management**
+      - [Purge All Conversations](#purge-all-conversations-)
+      - [Delete Chat](#delete-chat-)
+      - [Import Chat](#import-chat-)
+      - [Chat History](#chat-history-)
+      - [Clear Chat Context](#clear-chat-context-)
+    - **Miscellaneous**
+      - [Get Settings](#get-settings-)
 - [License](#license-)
 
 ---
@@ -56,11 +57,32 @@
 
 This documentation provides a comprehensive guide to all the available functions within the API.
 
+## Installation 💾
+
+Use Cargo to manage your dependencies and build your project. To integrate the API, add the following dependency to your `Cargo.toml`:
+
+```toml
+[dependencies]
+poe-api = { git = "https://github.com/zevtyardt/poe-api-rust", default-features = false }
+```
+
+##### Command-Line Interface (CLI)
+
+This library also offers a CLI. Install it using:
+
+```bash
+cargo install --git "https://github.com/zevtyardt/poe-api-rust"
+```
+
+Then, execute CLI commands using the `poe-cli` command.
+
 ---
+
+## Documentation 📖
 
 ## How to Get Your Token 🔑
 
-### Step 1: Retrieve `p-b` and `p-lat` Cookies (Required)
+#### Step 1: Retrieve `p-b` and `p-lat` Cookies (Required)
 
 1. **Sign in** at [poe.com](https://poe.com/).
 2. **Open Developer Tools:**
@@ -69,7 +91,7 @@ This documentation provides a comprehensive guide to all the available functions
    - **Safari:** Press `F12` or right-click and select **Inspect**, then access **Storage** > **Cookies**.
 3. **Copy** the values of the `p-b` and `p-lat` cookies.
 
-### Step 2: Retrieve `formkey` (Optional)
+#### Step 2: Retrieve `formkey` (Optional)
 
 > **Note:** The **poe-api-rust** automatically retrieves the `formkey` for you. If this fails, follow the steps below to obtain the token manually.
 
@@ -92,26 +114,6 @@ There are two methods to get the `formkey`:
 
 ---
 
-## Installation 💾
-
-Use Cargo to manage your dependencies and build your project. To integrate the API, add the following dependency to your `Cargo.toml`:
-
-```toml
-[dependencies]
-poe-api = { git = "https://github.com/zevtyardt/poe-api-rust", default-features = false }
-```
-
-### Command-Line Interface (CLI)
-
-This library also offers a CLI. Install it using:
-
-```bash
-cargo install --git "https://github.com/zevtyardt/poe-api-rust"
-```
-
-Then, execute CLI commands using the `poe-cli` command.
-
----
 
 ## Connecting to the API 🔗
 
@@ -128,8 +130,6 @@ let api = PoeApi::new(Token {
 ```
 
 ---
-
-## Documentation 📖
 
 ### Send Message ✉️
 
