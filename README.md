@@ -12,7 +12,7 @@
     - [Step 1: Retrieve `p-b` and `p-lat` Cookies (Required)](#step-1-retrieve-p-b-and-p-lat-cookies-required)
     - [Step 2: Retrieve `formkey` (Optional)](#step-2-retrieve-formkey-optional)
   - [Connecting to the API](#connecting-to-the-api-)
-  - [Functionality][#functionality]
+  - [Functionality](#functionality-)
     - **Message Handling**
       - [Send Message](#send-message-)
       - [Retry Message](#retry-message-)
@@ -80,7 +80,7 @@ Then, execute CLI commands using the `poe-cli` command.
 
 ## Documentation 📖
 
-## How to Get Your Token 🔑
+### How to Get Your Token 🔑
 
 #### Step 1: Retrieve `p-b` and `p-lat` Cookies (Required)
 
@@ -115,7 +115,7 @@ There are two methods to get the `formkey`:
 ---
 
 
-## Connecting to the API 🔗
+### Connecting to the API 🔗
 
 Below is a simple example of how to initialize a connection:
 
@@ -131,7 +131,7 @@ let api = PoeApi::new(Token {
 
 ---
 
-### Send Message ✉️
+#### Send Message ✉️
 
 Send a new message to a specified AI model or bot name. Both text and media messages are supported.
 
@@ -215,7 +215,7 @@ Related searches:
 
 ---
 
-### Retry Message 🔄
+#### Retry Message 🔄
 
 Reattempt sending or recreating a message that was previously undelivered or inappropriate.
 
@@ -242,7 +242,7 @@ let message = message.retry().await?;
 
 ---
 
-### Cancel Message ❌
+#### Cancel Message ❌
 
 Cancel a message that is in the process of being sent to avoid duplicates or errors.
 
@@ -268,7 +268,7 @@ message.cancel().await?;
 
 ---
 
-### Delete Messages 🗑️
+#### Delete Messages 🗑️
 
 Delete one or more messages from a chat by specifying their message IDs.
 
@@ -299,7 +299,7 @@ message.delete_message_context().await?;
 
 ---
 
-### Get Message Share URL 🔗
+#### Get Message Share URL 🔗
 
 Generate a shareable URL for a specific message, making it easy to share externally.
 
@@ -327,7 +327,7 @@ message.share().await?;
 
 ---
 
-### Get Total Cost Points 💰
+#### Get Total Cost Points 💰
 
 Calculate the total cost (in message points) for a specific message. Useful for metering or billing.
 
@@ -353,7 +353,7 @@ message.total_cost_points().await?;
 
 ---
 
-### Get List Preview Apps 📱
+#### Get List Preview Apps 📱
 
 Generate a shareable URL for preview apps. Poe.com's "Previews" feature allows you to interact with web applications, such as games, animations, or data visualizations using AI coding models.
 
@@ -379,7 +379,7 @@ message.list_preview_app().await?;
 
 ---
 
-### Explore 🔎
+#### Explore 🔎
 
 Discover available users, bots, and AI models.
 
@@ -431,7 +431,7 @@ while let Some(entity) = result.next().await {
 
 ---
 
-### Get Available Categories 📑
+#### Get Available Categories 📑
 
 Retrieve a list of all available AI model categories so that you can quickly find your interest.
 
@@ -452,7 +452,7 @@ println!("{:?}", categories);
 
 ---
 
-### Get Bot Info 🤖
+#### Get Bot Info 🤖
 
 Retrieve detailed information about a specific bot, including configuration, status, and capabilities.
 
@@ -495,7 +495,7 @@ Some(BotInfo {
 
 ---
 
-### Get User Info 👤
+#### Get User Info 👤
 
 Fetch profile details for a specific user.
 
@@ -533,7 +533,7 @@ Some(UserInfo {
 
 ---
 
-### Follow User ➕
+#### Follow User ➕
 
 Add the specified user to your follow list to track updates and activities.
 
@@ -556,7 +556,7 @@ api.follow_user(user_id).await?;
 
 ---
 
-### Unfollow User ➖
+#### Unfollow User ➖
 
 Remove the specified user from your follow list.
 
@@ -579,7 +579,7 @@ api.unfollow_user(user_id).await?;
 
 ---
 
-### Set Default Message Point Limit 🔢
+#### Set Default Message Point Limit 🔢
 
 Set the default threshold for message points per conversation. Useful for enforcing usage policies or managing message sizes.
 
@@ -625,7 +625,7 @@ api.set_default_bot(bot_id).await?;
 
 ---
 
-### Set Chat Context Optimization ⚙️
+#### Set Chat Context Optimization ⚙️
 
 Toggle context optimization for a chat session to improve relevance and performance.
 
@@ -653,7 +653,7 @@ message.chat().set_context_optimization(enabled).await?;
 
 ---
 
-### Set Chat Title 🏷️
+#### Set Chat Title 🏷️
 
 Update the title of an existing chat conversation.
 
@@ -681,7 +681,7 @@ message.chat().set_title(new_title).await?;
 
 ---
 
-### Purge All Conversations 🧹
+#### Purge All Conversations 🧹
 
 Remove all chat conversations from the system to reset the chat history.
 
@@ -695,7 +695,7 @@ api.purge_all_conversations().await?;
 
 ---
 
-### Delete Chat 🗑️
+#### Delete Chat 🗑️
 
 Delete a specific chat session using its unique identifier.
 
@@ -721,7 +721,7 @@ message.chat().delete().await?;
 
 ---
 
-### Import Chat 📥
+#### Import Chat 📥
 
 Import chat data from an external source, useful for migrating or restoring conversations.
 
@@ -744,7 +744,7 @@ api.import_chat(chat_code).await?;
 
 ---
 
-### Chat History 📜
+#### Chat History 📜
 
 Retrieve the complete history of chat conversations.
 
@@ -760,7 +760,7 @@ while let Some(chat) = api.chat_history() {
 
 ---
 
-### Clear Chat Context 🔄
+#### Clear Chat Context 🔄
 
 Reset the context of a specific chat conversation by clearing any stored temporary data. This is useful for restarting a conversation without any residual context.
 
@@ -786,7 +786,7 @@ message.chat().clear_context().await?;
 
 ---
 
-### Get Settings ⚙️
+#### Get Settings ⚙️
 
 Retrieve your settings including remaining points and additional configuration details.
 
