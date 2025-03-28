@@ -234,6 +234,7 @@ Reattempt sending or recreating a message that was previously undelivered or ina
 let chat_code: &str = "sample";
 let mut message = api.retry_message(chat_code).await?;
 
+// Alternately, retry via the message instance.
 let message = message.retry().await?;
 
 // Functionality similar to send_message.
