@@ -1,4 +1,4 @@
-use std::{sync::Arc, time::Duration};
+use std::{collections::HashSet, sync::Arc, time::Duration};
 
 use reqwest::{cookie::Jar, Client, Url};
 use scraper::{Html, Selector};
@@ -14,7 +14,7 @@ use crate::{
 pub struct PoeBundle {
     client: Client,
     window: String,
-    src_scripts: Vec<String>,
+    src_scripts: HashSet<String>,
     webpack_script: Option<String>,
     from_key: String,
 }
@@ -36,6 +36,7 @@ impl PoeBundle {
 
         Ok(Self {
             client,
+            src_scripts: HashSet::new(),
             ..Default::default()
         })
     }
@@ -80,7 +81,7 @@ impl PoeBundle {
                 self.webpack_script = Some(src.clone());
                 self.extend_src_scripts(&src).await?;
             } else {
-                self.src_scripts.push(src);
+                self.src_scripts.insert(src);
             }
         } else {
             // Mengolah inline script
@@ -127,7 +128,7 @@ impl PoeBundle {
         for cap in STATIC_PATTERN.captures_iter(&manifest) {
             if let Some(src_match) = cap.get(0) {
                 let full_src = format!("{}/{}", base_url, src_match.as_str());
-                self.src_scripts.push(full_src);
+                self.src_scripts.insert(full_src);
             }
         }
         Ok(())
