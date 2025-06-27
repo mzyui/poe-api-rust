@@ -1,7 +1,7 @@
 use serde::{de::Error, Deserialize, Deserializer, Serialize};
 use serde_json::Value;
 
-fn get_url<'de, D>(deserializer: D) -> anyhow::Result<Option<String>, D::Error>
+fn get_url<'de, D>(deserializer: D) -> Result<Option<String>, D::Error>
 where
     D: Deserializer<'de>,
 {
@@ -16,7 +16,7 @@ where
     Ok(None)
 }
 
-fn get_display_message_point_price<'de, D>(deserializer: D) -> anyhow::Result<i64, D::Error>
+fn get_display_message_point_price<'de, D>(deserializer: D) -> Result<i64, D::Error>
 where
     D: Deserializer<'de>,
 {
