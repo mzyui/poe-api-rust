@@ -38,7 +38,7 @@ use crate::{
     },
     queries::{RequestData, RequestPath},
     search::SearchResult,
-    utils::{generate_file, generate_nonce},
+    utils::{generate_file, generate_nonce, get_json_value},
 };
 
 type WsStream = WebSocketStream<MaybeTlsStream<TcpStream>>;
@@ -169,13 +169,12 @@ impl PoeApi {
             self.bundle.get_form_key().await?
         };
 
-        let mut rng = rand::rng();
         if request_data.ratelimit > 0 {
             log::warn!(
                 "Waiting queue {}/2 to avoid rate limit",
                 request_data.ratelimit
             );
-            time::sleep(Duration::from_secs(rng.random_range(2..=3))).await;
+            time::sleep(Duration::from_secs(rand::rng().random_range(2..=3))).await;
         }
         let payload = serde_json::to_string(&request_data.generate_payload())?;
         let mut base_string = payload.clone();
@@ -227,10 +226,7 @@ impl PoeApi {
             .get("success")
             .map_or(false, |v| v.as_bool().unwrap_or(false));
         if !is_success || data.get("data").is_none() {
-            if let Some(err) = data
-                .get("errors")
-                .and_then(|e| e.as_array())
-                .and_then(|e| e[0].get("message"))
+            if let Some(err) = get_json_value(&data, "errors.0.message")
             {
                 let msg = Value::as_str(err).unwrap_or("");
                 if msg == "Server Error" {
@@ -263,10 +259,7 @@ impl PoeApi {
                 ..Default::default()
             })
             .await?;
-        let is_success = response
-            .get("data")
-            .and_then(|d| d.get("poeSetDefaultBot"))
-            .and_then(|p| p.get("status"))
+        let is_success = get_json_value(&response, "data.poeSetDefaultBot.status")
             .and_then(|v| v.as_str())
             .map(|v| v == "success")
             .unwrap_or(false);
@@ -283,9 +276,7 @@ impl PoeApi {
                 ..Default::default()
             })
             .await?;
-        let is_success = response
-            .get("data")
-            .and_then(|v| v.get("setAllChatDefaultMessagePointPriceThreshold"))
+        let is_success = get_json_value(&response, "data.setAllChatDefaultMessagePointPriceThreshold")
             .map(|v| v.is_object())
             .unwrap_or(false);
         Ok(is_success)
@@ -321,12 +312,9 @@ impl PoeApi {
                         ..Default::default()
                     })
                     .await?;
-                if let Some(data) = response
-                    .get("data")
-                    .and_then(|d| d.get("continueChatFromPoeShare"))
-                {
-                    let status = data.get("status").and_then(|v| v.as_str()).unwrap_or("");
-                    if let Some(status_message) = data.get("statusMessage").and_then(|v| v.as_str())
+                if let Some(data) = get_json_value(&response, "data.continueChatFromPoeShare") {
+                    let status = get_json_value(data, "status").and_then(|v| v.as_str()).unwrap_or("");
+                    if let Some(status_message) = get_json_value(data, "statusMessage").and_then(|v| v.as_str())
                     {
                         if !status_message.is_empty() {
                             anyhow::bail!(format!("{}: {}", status, status_message));
@@ -350,9 +338,9 @@ impl PoeApi {
                 ..Default::default()
             })
             .await?;
-        if let Some(data) = response.get("data").and_then(|d| d.get("chatSetTitle")) {
-            let status = data.get("status").and_then(|v| v.as_str()).unwrap_or("");
-            if let Some(status_message) = data.get("statusMessage").and_then(|v| v.as_str()) {
+        if let Some(data) = get_json_value(&response, "data.chatSetTitle") {
+            let status = get_json_value(data, "status").and_then(|v| v.as_str()).unwrap_or("");
+            if let Some(status_message) = get_json_value(data, "statusMessage").and_then(|v| v.as_str()) {
                 if !status_message.is_empty() {
                     anyhow::bail!(format!("{}: {}", status, status_message));
                 }
@@ -377,10 +365,7 @@ impl PoeApi {
                 ..Default::default()
             })
             .await?;
-        let is_success = response
-            .get("data")
-            .and_then(|d| d.get("chatSetContextOptimization"))
-            .is_some();
+        let is_success = get_json_value(&response, "data.chatSetContextOptimization").is_some();
         Ok(is_success)
     }
 
@@ -394,10 +379,7 @@ impl PoeApi {
                 ..Default::default()
             })
             .await?;
-        let is_success = response
-            .get("data")
-            .and_then(|d| d.get("deleteChat"))
-            .is_some();
+        let is_success = get_json_value(&response, "data.deleteChat").is_some();
         Ok(is_success)
     }
 
@@ -497,15 +479,13 @@ impl PoeApi {
                 })
                 .await?;
 
-            if response.get("data").is_none() && response.get("errors").is_some() {
+            if get_json_value(&response, "data").is_none() && get_json_value(&response, "errors").is_some() {
                 anyhow::bail!(
                     "Bot {} not found. Make sure the bot exists before creating new chat.",
                     bot
                 )
             }
-            if let Some(data) = response
-                .get("data")
-                .and_then(|v| v.get("messageEdgeCreate"))
+            if let Some(data) = get_json_value(&response, "data.messageEdgeCreate")
             {
                 let message_data = serde_json::from_value::<MessageEdgeCreate>(data.clone())?;
 
@@ -545,20 +525,15 @@ impl PoeApi {
             })
             .await?;
 
-        if let Some(data) = response.get("data").and_then(|c| c.get("chatOfCode")) {
-            let msg_price = data
-                .get("defaultBotObject")
-                .and_then(|b| b.get("messagePointLimit"))
-                .and_then(|m| m.get("displayMessagePointPrice"))
+        if let Some(data) = get_json_value(&response, "data.chatOfCode") {
+            let msg_price = get_json_value(data, "defaultBotObject.messagePointLimit.displayMessagePointPrice")
                 .and_then(|v| v.as_i64());
-            let edges_map = data
-                .get("messagesConnection")
-                .and_then(|m| m.get("edges"))
+            let edges_map = get_json_value(data, "messagesConnection.edges")
                 .and_then(|v| v.as_array())
                 .map(|arr| {
                     arr.iter()
                         .filter_map(|value| {
-                            if let Some(node) = value.get("node") {
+                            if let Some(node) = get_json_value(value, "node") {
                                 if let Ok(message) = serde_json::from_value::<Message>(node.clone())
                                 {
                                     return Some(message);
@@ -588,13 +563,11 @@ impl PoeApi {
                     })
                     .await?;
 
-                if let Some(data) = response
-                    .get("data")
-                    .and_then(|v| v.get("messageRegenerate"))
+                if let Some(data) = get_json_value(&response, "data.messageRegenerate")
                 {
                     if let (Some(status), Some(status_message)) = (
-                        data.get("status").and_then(|v| v.as_str()),
-                        data.get("statusMessage").and_then(|v| v.as_str()),
+                        get_json_value(data, "status").and_then(|v| v.as_str()),
+                        get_json_value(data, "statusMessage").and_then(|v| v.as_str()),
                     ) {
                         if !status_message.is_empty() {
                             anyhow::bail!("{}: {}", status, status_message)
@@ -624,10 +597,7 @@ impl PoeApi {
             })
             .await?;
 
-        let is_success = response
-            .get("data")
-            .and_then(|d| d.get("cancelViewerActiveJobs"))
-            .is_some();
+        let is_success = get_json_value(&response, "data.cancelViewerActiveJobs").is_some();
         Ok(is_success)
     }
 
@@ -653,10 +623,7 @@ impl PoeApi {
                 ..Default::default()
             })
             .await?;
-        let is_success = response
-            .get("data")
-            .and_then(|d| d.get("messagesDelete"))
-            .is_some();
+        let is_success = get_json_value(&response, "data.messagesDelete").is_some();
         Ok(is_success)
     }
 
@@ -670,11 +637,7 @@ impl PoeApi {
                 ..Default::default()
             })
             .await?;
-        let point = response
-            .get("data")
-            .and_then(|d| d.get("messageOfCode"))
-            .and_then(|d| d.get("responsibleJob"))
-            .and_then(|j| j.get("totalCostPoints"))
+        let point = get_json_value(&response, "data.messageOfCode.responsibleJob.totalCostPoints")
             .and_then(|v| v.as_i64())
             .unwrap_or(-1);
         Ok(point)
@@ -695,10 +658,7 @@ impl PoeApi {
                 ..Default::default()
             })
             .await?;
-        if let Some(share_code) = response
-            .get("data")
-            .and_then(|d| d.get("messagesShare"))
-            .and_then(|m| m.get("shareCode"))
+        if let Some(share_code) = get_json_value(&response, "data.messagesShare.shareCode")
             .and_then(|c| c.as_str())
         {
             let url = format!("{}/s/{}", BASE_URL, share_code);
@@ -721,11 +681,7 @@ impl PoeApi {
                 })
                 .await?;
 
-            if let Some(share_url) = response
-                .get("data")
-                .and_then(|d| d.get("sharePreviewFromMessage"))
-                .and_then(|s| s.get("sharedPreview"))
-                .and_then(|s| s.get("shareUrl"))
+            if let Some(share_url) = get_json_value(&response, "data.sharePreviewFromMessage.sharedPreview.shareUrl")
                 .and_then(|v| v.as_str())
             {
                 share_urls.push(share_url.to_string());
@@ -770,13 +726,11 @@ impl PoeApi {
                 ..Default::default()
             })
             .await?;
-        if let Some(category_names) = response
-            .get("data")
-            .and_then(|d| d.get("exploreBotsCategoryObjects"))
+        if let Some(category_names) = get_json_value(&response, "data.exploreBotsCategoryObjects")
             .and_then(|v| v.as_array())
         {
             for category in category_names {
-                if let Some(name) = category.get("categoryName").and_then(|v| v.as_str()) {
+                if let Some(name) = get_json_value(category, "categoryName").and_then(|v| v.as_str()) {
                     categories.push(name.to_string())
                 }
             }
@@ -793,7 +747,7 @@ impl PoeApi {
         };
 
         let response = self.send_request(data).await?;
-        if let Some(data) = response.get("data").and_then(|v| v.get("bot")) {
+        if let Some(data) = get_json_value(&response, "data.bot") {
             if !data.is_null() {
                 let bot = serde_json::from_value::<BotInfo>(data.clone())?;
                 return Ok(Some(bot));
@@ -813,7 +767,7 @@ impl PoeApi {
                 ..Default::default()
             })
             .await?;
-        if let Some(data) = response.get("data").and_then(|v| v.get("user")) {
+        if let Some(data) = get_json_value(&response, "data.user") {
             if !data.is_null() {
                 let user = serde_json::from_value::<UserInfo>(data.clone())?;
                 return Ok(Some(user));
@@ -838,10 +792,7 @@ impl PoeApi {
                 ..Default::default()
             })
             .await?;
-        let is_success = response
-            .get("data")
-            .and_then(|d| d.get("poeUserSetFollow"))
-            .and_then(|p| p.get("status"))
+        let is_success = get_json_value(&response, "data.poeUserSetFollow.status")
             .and_then(|v| v.as_str())
             .map(|v| v == "success")
             .unwrap_or(false);
@@ -870,7 +821,7 @@ impl PoeApi {
             })
             .await?;
 
-        if let Some(data) = response.get("data").and_then(|d| d.get("viewer")) {
+        if let Some(data) = get_json_value(&response, "data.viewer") {
             let settings = serde_json::from_value::<MySettings>(data.clone())?;
             return Ok(settings);
         }

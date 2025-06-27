@@ -1,6 +1,7 @@
 use mime2ext::mime2ext;
 use rand::Rng;
 use reqwest::Client;
+use serde_json::Value;
 use tokio::fs;
 
 use crate::{
@@ -17,6 +18,16 @@ pub fn generate_nonce(length: usize) -> String {
             CHARSET[idx] as char
         })
         .collect()
+}
+
+pub fn get_json_value<'a>(value: &'a Value, path: &str) -> Option<&'a Value> {
+    let parts: Vec<&str> = path.split('.').collect();
+    let mut current_value = Some(value);
+
+    for part in parts {
+        current_value = current_value.and_then(|v| v.get(part));
+    }
+    current_value
 }
 
 pub async fn generate_file(files: &[FileInput<'_>]) -> anyhow::Result<Vec<FileData>> {
