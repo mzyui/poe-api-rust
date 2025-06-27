@@ -3,7 +3,7 @@ use std::{collections::VecDeque, task::Poll};
 use futures_util::{FutureExt, Stream};
 use serde_json::{json, Value};
 
-use crate::{api::PoeApi, chat::Chat, models::query::QueryHash, queries::RequestData};
+use crate::{api::PoeApi, chat::Chat, models::query::QueryHash, queries::RequestData, utils::get_json_value};
 
 #[derive(Debug)]
 pub struct ChatHistory<'a> {
@@ -65,15 +65,13 @@ impl<'a> ChatHistory<'a> {
                 .await?;
 
             self.is_completed = true;
-            if let Some(data) = response.get("data").and_then(|d| d.get("chats")) {
-                self.cursor = data
-                    .get("pageInfo")
-                    .and_then(|p| p.get("endCursor"))
+            if let Some(data) = get_json_value(&response, "data.chats") {
+                self.cursor = get_json_value(data, "pageInfo.endCursor")
                     .and_then(|v| v.as_str())
                     .map(|v| v.to_string());
-                if let Some(items) = data.get("edges").and_then(|v| v.as_array()) {
+                if let Some(items) = get_json_value(data, "edges").and_then(|v| v.as_array()) {
                     for item in items {
-                        if let Some(node) = item.get("node") {
+                        if let Some(node) = get_json_value(item, "node") {
                             let chat = serde_json::from_value::<Chat>(node.clone())?;
                             self.results.push_back(chat);
                             self.is_completed = false;
