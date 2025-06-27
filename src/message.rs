@@ -128,6 +128,50 @@ impl<'a> MessageContext<'a> {
         Ok(())
     }
 
+    async fn handle_websocket_message(&mut self, message: WsMessage) -> anyhow::Result<Option<MessageQueue>> {
+        if let WsMessage::Close(_) = message {
+            self.reconnect().await?;
+            return Ok(None);
+        }
+
+        if let WsMessage::Text(message) = message {
+            if let Ok(on_message) = serde_json::from_str::<OnMessage>(&message) {
+                return self.process_on_message(on_message).await;
+            }
+        }
+        Ok(None)
+    }
+
+    async fn process_on_message(&mut self, on_message: OnMessage) -> anyhow::Result<Option<MessageQueue>> {
+        for message in on_message.messages {
+            if message.payload == MessageType::RefetchChannel {
+                self.reconnect().await?;
+                break;
+            } else if message.payload == MessageType::MessageCancelled {
+                self.is_cancelled = true;
+            } else if let MessageType::ChatTitleUpdated(ref title) = message.payload {
+                if self.chat.chat_id == message.chat_id {
+                    self.chat_title = title.text.clone();
+                }
+            } else if let MessageType::JobUpdated(ref job) = message.payload {
+                self.is_completed = job.state.starts_with("complete")
+                    && self.chat.chat_id == message.chat_id;
+            }
+            if self.is_completed && self.chat_title.is_empty() {
+                if let Some(title) = self.chat.title.clone() {
+                    self.chat_title = title;
+                }
+            }
+
+            self.api
+                .message_queues
+                .entry(message.chat_id)
+                .or_default()
+                .push_back(message);
+        }
+        Ok(None)
+    }
+
     async fn read_message(&mut self) -> anyhow::Result<MessageQueue> {
         while (!self.is_completed && !self.is_cancelled) || self.chat_title.is_empty() {
             // read from cache
@@ -142,47 +186,13 @@ impl<'a> MessageContext<'a> {
 
             if let Some(reader) = &mut self.api.stream_reader {
                 if let Some(message) = reader.next().await {
-                    if let Ok(WsMessage::Close(_)) = message {
-                        self.reconnect().await?;
-                        continue;
-                    }
-
-                    if let Ok(WsMessage::Text(message)) = message {
-                        if let Ok(on_message) = serde_json::from_str::<OnMessage>(&message) {
-                            for message in on_message.messages {
-                                if message.payload == MessageType::RefetchChannel {
-                                    self.reconnect().await?;
-                                    break;
-                                } else if message.payload == MessageType::MessageCancelled {
-                                    self.is_cancelled = true;
-                                } else if let MessageType::ChatTitleUpdated(ref title) =
-                                    message.payload
-                                {
-                                    if self.chat.chat_id == message.chat_id {
-                                        self.chat_title = title.text.clone();
-                                    }
-                                } else if let MessageType::JobUpdated(ref job) = message.payload {
-                                    self.is_completed = job.state.starts_with("complete")
-                                        && self.chat.chat_id == message.chat_id;
-                                }
-                                if self.is_completed && self.chat_title.is_empty() {
-                                    if let Some(title) = self.chat.title.clone() {
-                                        self.chat_title = title;
-                                    }
-                                }
-
-                                self.api
-                                    .message_queues
-                                    .entry(message.chat_id)
-                                    .or_default()
-                                    .push_back(message);
-                            }
-                        }
+                    if let Some(processed_message) = self.handle_websocket_message(message?).await? {
+                        return Ok(processed_message);
                     }
                 }
             }
         }
-        anyhow::bail!("Message is completed")
+        anyhow::bail!("No more messages or stream completed unexpectedly.")
     }
 
     async fn next_message(&mut self) -> Option<Text> {
